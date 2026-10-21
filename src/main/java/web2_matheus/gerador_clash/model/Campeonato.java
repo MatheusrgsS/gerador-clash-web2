@@ -1,37 +1,65 @@
 package web2_matheus.gerador_clash.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "campeonato")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Campeonato {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private StatusCampeonato status = StatusCampeonato.CRIADO;
 
-    // Equipe consagrada como vencedora do torneio
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "campeao_id")
     private Equipe campeao;
 
-    // Equipes participantes inscritas no torneio
+    @ManyToMany
+    @JoinTable(
+        name = "campeonato_equipe",
+        joinColumns = @JoinColumn(name = "campeonato_id"),
+        inverseJoinColumns = @JoinColumn(name = "equipe_id")
+    )
     private List<Equipe> equipes = new ArrayList<>();
 
-    // Partidas que compõem as fases do torneio
+    @OneToMany(mappedBy = "campeonato", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Partida> partidas = new ArrayList<>();
 
-    public Campeonato() {
-    }
-
-    public Campeonato(Long id, String nome, LocalDate dataInicio) {
-        this.id = id;
-        this.nome = nome;
-        this.dataInicio = dataInicio;
-        this.status = StatusCampeonato.CRIADO;
-    }
-
-    // Métodos auxiliares de associação
     public void adicionarEquipe(Equipe equipe) {
         this.equipes.add(equipe);
     }
@@ -48,85 +76,5 @@ public class Campeonato {
     public void removerPartida(Partida partida) {
         this.partidas.remove(partida);
         partida.setCampeonato(null);
-    }
-
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public LocalDate getDataInicio() {
-        return dataInicio;
-    }
-
-    public void setDataInicio(LocalDate dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public StatusCampeonato getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusCampeonato status) {
-        this.status = status;
-    }
-
-    public Equipe getCampeao() {
-        return campeao;
-    }
-
-    public void setCampeao(Equipe campeao) {
-        this.campeao = campeao;
-    }
-
-    public List<Equipe> getEquipes() {
-        return equipes;
-    }
-
-    public void setEquipes(List<Equipe> equipes) {
-        this.equipes = equipes;
-    }
-
-    public List<Partida> getPartidas() {
-        return partidas;
-    }
-
-    public void setPartidas(List<Partida> partidas) {
-        this.partidas = partidas;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Campeonato that = (Campeonato) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Campeonato{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", dataInicio=" + dataInicio +
-                ", status=" + status +
-                '}';
     }
 }

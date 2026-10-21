@@ -1,149 +1,67 @@
 package web2_matheus.gerador_clash.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "partida")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Partida {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer rodada; // 1 = Oitavas/Quartas, 2 = Semifinal, 3 = Final, etc.
+
+    @Column(nullable = false)
+    private Integer rodada;
+
+    @Column(name = "data_hora")
     private LocalDateTime dataHora;
+
+    @Column(name = "placar_mandante")
     private Integer placarMandante;
+
+    @Column(name = "placar_visitante")
     private Integer placarVisitante;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private StatusPartida status = StatusPartida.AGENDADA;
 
-    // Associações
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arena_id")
     private Arena arena;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipe_mandante_id", nullable = false)
     private Equipe equipeMandante;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipe_visitante_id", nullable = false)
     private Equipe equipeVisitante;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vencedor_id")
     private Equipe vencedor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "campeonato_id", nullable = false)
     private Campeonato campeonato;
-
-    public Partida() {
-    }
-
-    public Partida(Long id, Integer rodada, LocalDateTime dataHora, Arena arena, 
-                   Equipe equipeMandante, Equipe equipeVisitante, Campeonato campeonato) {
-        this.id = id;
-        this.rodada = rodada;
-        this.dataHora = dataHora;
-        this.arena = arena;
-        this.equipeMandante = equipeMandante;
-        this.equipeVisitante = equipeVisitante;
-        this.campeonato = campeonato;
-        this.status = StatusPartida.AGENDADA;
-    }
-
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getRodada() {
-        return rodada;
-    }
-
-    public void setRodada(Integer rodada) {
-        this.rodada = rodada;
-    }
-
-    public LocalDateTime getDataHora() {
-        return dataHora;
-    }
-
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
-    }
-
-    public Integer getPlacarMandante() {
-        return placarMandante;
-    }
-
-    public void setPlacarMandante(Integer placarMandante) {
-        this.placarMandante = placarMandante;
-    }
-
-    public Integer getPlacarVisitante() {
-        return placarVisitante;
-    }
-
-    public void setPlacarVisitante(Integer placarVisitante) {
-        this.placarVisitante = placarVisitante;
-    }
-
-    public StatusPartida getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusPartida status) {
-        this.status = status;
-    }
-
-    public Arena getArena() {
-        return arena;
-    }
-
-    public void setArena(Arena arena) {
-        this.arena = arena;
-    }
-
-    public Equipe getEquipeMandante() {
-        return equipeMandante;
-    }
-
-    public void setEquipeMandante(Equipe equipeMandante) {
-        this.equipeMandante = equipeMandante;
-    }
-
-    public Equipe getEquipeVisitante() {
-        return equipeVisitante;
-    }
-
-    public void setEquipeVisitante(Equipe equipeVisitante) {
-        this.equipeVisitante = equipeVisitante;
-    }
-
-    public Equipe getVencedor() {
-        return vencedor;
-    }
-
-    public void setVencedor(Equipe vencedor) {
-        this.vencedor = vencedor;
-    }
-
-    public Campeonato getCampeonato() {
-        return campeonato;
-    }
-
-    public void setCampeonato(Campeonato campeonato) {
-        this.campeonato = campeonato;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Partida partida = (Partida) o;
-        return Objects.equals(id, partida.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Partida{" +
-                "id=" + id +
-                ", rodada=" + rodada +
-                ", status=" + status +
-                ", placarMandante=" + placarMandante +
-                ", placarVisitante=" + placarVisitante +
-                '}';
-    }
 }

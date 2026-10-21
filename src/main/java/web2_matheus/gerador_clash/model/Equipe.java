@@ -1,30 +1,45 @@
 package web2_matheus.gerador_clash.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "equipe")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Equipe {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @Column(length = 100)
     private String responsavel;
+
+    @Column(length = 20)
     private String telefone;
 
-    // Relacionamento 1:N (Uma equipe possui vários jogadores)
+    @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Jogador> jogadores = new ArrayList<>();
 
-    public Equipe() {
-    }
-
-    public Equipe(Long id, String nome, String responsavel, String telefone) {
-        this.id = id;
-        this.nome = nome;
-        this.responsavel = responsavel;
-        this.telefone = telefone;
-    }
-
-    // Métodos auxiliares para gerenciar a associação com consistência
+    // Métodos auxiliares continuam aqui para facilitar o vinculo com Jogador
     public void adicionarJogador(Jogador jogador) {
         this.jogadores.add(jogador);
         jogador.setEquipe(this);
@@ -33,69 +48,5 @@ public class Equipe {
     public void removerJogador(Jogador jogador) {
         this.jogadores.remove(jogador);
         jogador.setEquipe(null);
-    }
-
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getResponsavel() {
-        return responsavel;
-    }
-
-    public void setResponsavel(String responsavel) {
-        this.responsavel = responsavel;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public List<Jogador> getJogadores() {
-        return jogadores;
-    }
-
-    public void setJogadores(List<Jogador> jogadores) {
-        this.jogadores = jogadores;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Equipe equipe = (Equipe) o;
-        return Objects.equals(id, equipe.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Equipe{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", responsavel='" + responsavel + '\'' +
-                ", telefone='" + telefone + '\'' +
-                '}';
     }
 }
