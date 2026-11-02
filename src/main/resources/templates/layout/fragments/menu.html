@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="menu" class="space-y-4" id="menu">
+
+  <!-- 1o Item: Equipes (CRUD da Etapa 4) -->
+  <div x-data="{ open: true }">
+    <button th:replace="~{components/menu-item-button :: menu-item-button('Equipes', ~{::#equipe-icon})}"></button>
+
+    <div x-show="open" class="space-y-3 ps-8 pt-2">
+      <div th:replace="~{components/menu-item-option :: menu-item-option('Cadastrar', @{/equipes/novo}, ~{::#cadastrar-icon})}"></div>
+      <div th:replace="~{components/menu-item-option :: menu-item-option('Pesquisar', @{/equipes}, ~{::#pesquisar-icon})}"></div>
+    </div>
+  </div>
+
+  <!-- 2o Item: Campeonatos (Lógica de Negócios da Etapa 5) -->
+  <div x-data="{ open: false }">
+    <button th:replace="~{components/menu-item-button :: menu-item-button('Campeonatos', ~{::#torneio-icon})}"></button>
+
+    <div x-show="open" class="space-y-3 ps-8 pt-2">
+      <div th:replace="~{components/menu-item-option :: menu-item-option('Novo Torneio', @{/campeonatos/novo}, ~{::#cadastrar-icon})}"></div>
+      <div th:replace="~{components/menu-item-option :: menu-item-option('Meus Torneios', @{/campeonatos}, ~{::#pesquisar-icon})}"></div>
+    </div>
+  </div>
+
+  <!-- SVGs / Ícones -->
+  <div class="hidden">
+    <svg id="equipe-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+    </svg>
+
+    <svg id="torneio-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.774-3.333 3.03V13h2a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h2v-2.044c-1.455-.256-2.543-1.165-3.333-3.03a3 3 0 1 1-1.133-5.89A33 33 0 0 1 2.5.5"/>
+    </svg>
+
+    <svg id="cadastrar-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+    </svg>
+
+    <svg id="pesquisar-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+    </svg>
+  </div>
+
+</div>
+</html>

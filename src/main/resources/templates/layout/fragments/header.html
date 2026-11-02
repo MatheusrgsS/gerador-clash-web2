@@ -1,0 +1,32 @@
+<div th:fragment="header" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <header class="flex items-center justify-between bg-orange-800 p-4 border-b border-gray-700 shadow-sm">
+
+    <div class="flex items-center space-x-3">
+      <!-- Botão para MINIMIZAR / EXPANDIR a barra lateral -->
+      <button @click="sidebarAberta = !sidebarAberta" type="button"
+        class="hidden md:flex items-center justify-center p-2 rounded-lg text-orange-950 hover:text-white hover:bg-orange-950 focus:outline-none transition"
+        title="Alternar Menu Lateral">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+        </svg>
+      </button>
+
+      <a th:href="@{/}" class="flex items-center gap-1.5 group">
+        <img th:src="@{/images/logo_semfundo.png}" alt="Gerador Clash"
+          class="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
+        <div class="text-xl font-extrabold tracking-tight text-white md:text-2xl leading-none">
+          Gerador <span class="text-emerald-400">Clash</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Usuário e login/logout -->
+    <div class="hidden items-center md:flex" th:fragment="usuariologinlogout" id="usuariologinlogout">
+      <div class="text-sm text-gray-300">
+        <span class="bg-orange-950 px-3 py-1 rounded-full text-xs text-emerald-400 font-medium">Temporada 2026</span>
+      </div>
+    </div>
+  </header>
+</div>

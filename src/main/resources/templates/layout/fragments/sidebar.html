@@ -1,0 +1,12 @@
+<div th:fragment="sidebar" 
+     x-show="sidebarAberta"
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="-translate-x-full opacity-0"
+     x-transition:enter-end="translate-x-0 opacity-100"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="translate-x-0 opacity-100"
+     x-transition:leave-end="-translate-x-full opacity-0"
+     class="hidden flex-col space-y-3 bg-gray-800 py-1 pl-5 pt-6 text-gray-400 md:flex md:w-64 border-r border-gray-700 transition-all duration-300 shadow-lg"
+     xmlns:th="http://www.thymeleaf.org">
+  <th:block th:replace="~{layout/fragments/menu :: menu}"></th:block>
+</div>

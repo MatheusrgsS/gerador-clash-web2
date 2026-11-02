@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+  <title th:text="${equipe.id == null ? 'Nova Equipe - Gerador Clash' : 'Editar Equipe - Gerador Clash'}">Formulário de Equipe</title>
+</head>
+
+<body>
+  <main id="main" layout:fragment="conteudo" class="flex-1 p-6 md:p-8 bg-gray-900 text-gray-100 overflow-y-auto">
+
+    <!-- Cabeçalho e Navegação -->
+    <div class="max-w-2xl mx-auto mb-6">
+      <div class="flex items-center gap-2 text-xs text-gray-500 mb-2 uppercase tracking-wider font-semibold">
+        <a th:href="@{/equipes}" class="hover:text-orange-400 transition">Equipes</a>
+        <span>/</span>
+        <span class="text-gray-300" th:text="${equipe.id == null ? 'Nova Equipe' : 'Editar Equipe'}">Cadastro</span>
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight"
+          th:text="${equipe.id == null ? 'Cadastrar Nova Equipe' : 'Editar Equipe'}">
+        Cadastro de Equipe
+      </h1>
+      <p class="text-sm text-gray-400 mt-1">Preencha os dados da equipe para registrar no torneio.</p>
+    </div>
+
+    <!-- Card do Formulário -->
+    <div class="max-w-2xl mx-auto bg-gray-800/80 rounded-2xl border border-gray-700/80 p-6 md:p-8 shadow-xl">
+      
+      <form th:action="${equipe.id == null} ? @{/equipes/novo} : @{/equipes/{id}/editar(id=${equipe.id})}"
+            th:object="${equipe}" method="post" class="space-y-6">
+
+        <!-- ID oculto na edição -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Campo: Nome da Equipe -->
+        <div>
+          <label for="nome" class="block text-sm font-semibold text-gray-200 mb-2">
+            Nome da Equipe <span class="text-orange-500">*</span>
+          </label>
+          <input type="text" th:field="*{nome}" id="nome" placeholder="Ex: Galácticos, SAFdoCorinthians..."
+                 th:class="|w-full px-4 py-3 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('nome') ? 'border-red-500 focus:ring-2 focus:ring-red-500/50' : 'border-gray-700 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30'}|" />
+          <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-xs text-red-400 mt-1.5 font-medium"></p>
+        </div>
+
+        <!-- Campo: Responsável -->
+        <div>
+          <label for="responsavel" class="block text-sm font-semibold text-gray-200 mb-2">
+            Nome do Responsável / Técnico <span class="text-orange-500">*</span>
+          </label>
+          <input type="text" th:field="*{responsavel}" id="responsavel" placeholder="Ex: Flávio Caça Rato"
+                 th:class="|w-full px-4 py-3 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('responsavel') ? 'border-red-500 focus:ring-2 focus:ring-red-500/50' : 'border-gray-700 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30'}|" />
+          <p th:if="${#fields.hasErrors('responsavel')}" th:errors="*{responsavel}" class="text-xs text-red-400 mt-1.5 font-medium"></p>
+        </div>
+
+        <!-- Campo: Telefone -->
+        <div>
+          <label for="telefone" class="block text-sm font-semibold text-gray-200 mb-2">
+            Telefone de Contato <span class="text-orange-500">*</span>
+          </label>
+          <input type="text" th:field="*{telefone}" id="telefone" placeholder="Ex: (34) 99002-8922"
+                 th:class="|w-full px-4 py-3 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('telefone') ? 'border-red-500 focus:ring-2 focus:ring-red-500/50' : 'border-gray-700 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30'}|" />
+          <p th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="text-xs text-red-400 mt-1.5 font-medium"></p>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="pt-4 border-t border-gray-700/80 flex items-center justify-end gap-3">
+          <a th:href="@{/equipes}" 
+             class="px-5 py-2.5 rounded-xl border border-gray-700 text-gray-300 hover:bg-gray-700/50 text-sm font-semibold transition">
+            Cancelar
+          </a>
+          <button type="submit"
+                  class="px-6 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm shadow-lg shadow-orange-500/20 transition transform hover:-translate-y-0.5">
+            Salvar Equipe
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </main>
+</body>
+
+</html>

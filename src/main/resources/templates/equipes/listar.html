@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+  <title>Equipes - Gerador Clash</title>
+</head>
+
+<body>
+  <main id="main" layout:fragment="conteudo" class="flex-1 p-6 md:p-8 bg-gray-900 text-gray-100 overflow-y-auto">
+
+    <!-- Topo da Página -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Equipes Participantes</h1>
+        </div>
+        <p class="text-sm text-gray-400 mt-1">Gerencie os times e seus respectivos elencos</p>
+      </div>
+
+      <!-- Botão para cadastrar nova equipe -->
+      <a th:href="@{/equipes/novo}"
+        class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition text-sm">
+        + Nova Equipe
+      </a>
+    </div>
+
+    <!-- Mensagens de Notificação -->
+    <div th:if="${mensagemSucesso}"
+      class="mb-5 p-4 rounded-xl bg-emerald-950/60 border border-emerald-800 text-emerald-300 text-sm">
+      <span th:text="${mensagemSucesso}">Ação executada com sucesso.</span>
+    </div>
+
+    <!-- Bloco com Filtro e Tabela -->
+    <div class="bg-gray-800/80 rounded-2xl border border-gray-700/80 shadow-xl overflow-hidden">
+
+      <!-- Formulário de Pesquisa -->
+      <form th:action="@{/equipes}" method="get"
+        class="p-4 border-b border-gray-700 bg-gray-900/40 flex flex-wrap gap-3">
+        <div class="flex-1 min-w-[220px]">
+          <input type="text" name="busca" th:value="${busca}" placeholder="Filtrar equipe por nome..."
+            class="w-full px-4 py-2.5 bg-gray-900 border border-gray-700 rounded-xl text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-orange-500 transition" />
+        </div>
+        <button type="submit"
+          class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition">
+          Pesquisar
+        </button>
+        <a th:if="${busca != null and !busca.isBlank()}" th:href="@{/equipes}"
+          class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2.5 rounded-xl text-sm font-medium transition inline-flex items-center">
+          Limpar
+        </a>
+      </form>
+
+      <!-- Tabela -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-300">
+          <thead class="bg-gray-900/80 text-xs uppercase text-gray-400 tracking-wider border-b border-gray-700">
+            <tr>
+              <th class="px-6 py-4 w-16">ID</th>
+              <th class="px-6 py-4">Equipe</th>
+              <th class="px-6 py-4">Responsável</th>
+              <th class="px-6 py-4">Telefone</th>
+              <th class="px-6 py-4 text-center">Elenco</th>
+              <th class="px-6 py-4 text-right">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-700/60">
+            <tr th:each="equipe : ${pagina.conteudo}" class="hover:bg-gray-700/30 transition">
+              <td class="px-6 py-4 font-mono text-xs text-gray-500" th:text="'#' + ${equipe.id}">#1</td>
+              <td class="px-6 py-4 font-bold text-white text-base" th:text="${equipe.nome}">Nome da Equipe</td>
+              <td class="px-6 py-4 text-gray-300" th:text="${equipe.responsavel}">Responsável</td>
+              <td class="px-6 py-4 text-gray-400 font-mono text-xs" th:text="${equipe.telefone}">(00) 00000-0000</td>
+
+              <!-- Quantidade de Atletas -->
+              <td class="px-6 py-4 text-center">
+                <span
+                  class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-800 text-gray-300 border border-gray-700">
+                  <span th:text="${#lists.size(equipe.jogadores)}" class="font-bold text-orange-400">0</span> atletas
+                </span>
+              </td>
+              <!-- Ações com Botão Claro para Jogadores -->
+              <td class="px-6 py-4 text-right space-x-2">
+                <a th:href="@{/equipes/{id}/jogadores(id=${equipe.id})}"
+                  class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-orange-400 bg-orange-950/60 border border-orange-800/60 hover:bg-orange-500 hover:text-white rounded-lg transition"
+                  title="Gerenciar Elenco">
+                  ⚽ Gerenciar Elenco
+                </a>
+                <a th:href="@{/equipes/{id}/editar(id=${equipe.id})}"
+                  class="inline-block px-2.5 py-1 text-xs font-semibold text-blue-400 hover:text-blue-300 hover:bg-gray-800 rounded-lg transition">
+                  Editar
+                </a>
+                <form th:action="@{/equipes/{id}/excluir(id=${equipe.id})}" method="post" class="inline"
+                  onsubmit="return confirm('Deseja realmente excluir esta equipe?');">
+                  <button type="submit"
+                    class="px-2.5 py-1 text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-gray-800 rounded-lg transition">
+                    Excluir
+                  </button>
+                </form>
+              </td>
+            </tr>
+
+            <!-- Estado Vazio -->
+            <tr th:if="${pagina.vazia}">
+              <td colspan="6" class="px-6 py-12 text-center text-gray-400">
+                <p class="text-base font-medium text-gray-300">Nenhuma equipe encontrada.</p>
+                <p class="text-xs text-gray-500 mt-1">Utilize o botão "Nova Equipe" para cadastrar um time.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginação -->
+      <div class="p-4 border-t border-gray-700 bg-gray-900/30">
+        <th:block th:replace="~{components/paginacao :: paginacao(${pagina})}"></th:block>
+      </div>
+
+    </div>
+
+  </main>
+</body>
+
+</html>
