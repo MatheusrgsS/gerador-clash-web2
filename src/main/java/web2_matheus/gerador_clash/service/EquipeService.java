@@ -19,26 +19,25 @@ public class EquipeService {
     private final JogadorRepository jogadorRepository;
 
     // Construtor explícito: injeta as dependências e elimina 100% o bug do VS Code
-    // os construtures do loombok estavam dando erro no VS Code, então optei por fazer o construtor manualmente
+    // os construtures do loombok estavam dando erro no VS Code, então optei por
+    // fazer o construtor manualmente
     public EquipeService(EquipeRepository equipeRepository, JogadorRepository jogadorRepository) {
         this.equipeRepository = equipeRepository;
         this.jogadorRepository = jogadorRepository;
     }
 
-    // Listagem com paginação e busca por nome 
     @Transactional(readOnly = true)
     public Page<Equipe> listarPaginado(String busca, int pagina, int tamanho) {
-        Pageable pageable = PageRequest.of(pagina, tamanho, Sort.by("nome").ascending());
+        Pageable pageable = PageRequest.of(pagina, tamanho, Sort.by(Sort.Direction.ASC, "nome"));
         if (busca != null && !busca.trim().isEmpty()) {
             return equipeRepository.findByNomeContainingIgnoreCase(busca.trim(), pageable);
         }
         return equipeRepository.findAll(pageable);
     }
 
-    // Listagem simples (usada na seleção de participantes de torneios)
     @Transactional(readOnly = true)
     public List<Equipe> listarTodas() {
-        return equipeRepository.findAll(Sort.by("nome").ascending());
+        return equipeRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
     }
 
     @Transactional(readOnly = true)
@@ -60,7 +59,6 @@ public class EquipeService {
         equipeRepository.deleteById(id);
     }
 
-    // Gerenciamento de jogadores vinculados à equipe
     @Transactional
     public Jogador adicionarJogador(Long equipeId, Jogador jogador) {
         Equipe equipe = buscarPorId(equipeId);
@@ -73,7 +71,7 @@ public class EquipeService {
         Equipe equipe = buscarPorId(equipeId);
         Jogador jogador = jogadorRepository.findById(jogadorId)
                 .orElseThrow(() -> new IllegalArgumentException("Jogador não encontrado."));
-        
+
         equipe.removerJogador(jogador);
         jogadorRepository.delete(jogador);
     }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+  <title>Novo Torneio - Gerador Clash</title>
+</head>
+
+<body>
+  <main id="main" layout:fragment="conteudo"
+    x-data="{ sel: [], get valido() { return [4, 8, 16].includes(this.sel.length) } }"
+    class="flex-1 p-6 md:p-8 bg-gray-900 text-gray-100 overflow-y-auto">
+
+    <!-- Cabeçalho e Navegação -->
+    <div class="max-w-3xl mx-auto mb-6">
+      <div class="flex items-center gap-2 text-xs text-gray-500 mb-2 uppercase tracking-wider font-semibold">
+        <a th:href="@{/campeonatos}" th:hx-get="@{/campeonatos}" hx-push-url="true"
+          class="hover:text-orange-400 transition">Torneios</a>
+        <span>/</span>
+        <span class="text-gray-300">Novo Torneio</span>
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Criar Novo Torneio</h1>
+      <p class="text-sm text-gray-400 mt-1">Escolha o nome e as equipes. As chaves e as arenas serão sorteadas
+        automaticamente.</p>
+    </div>
+
+    <div th:if="${mensagemErro}"
+      class="max-w-3xl mx-auto mb-5 p-4 rounded-xl bg-red-950/60 border border-red-800 text-red-300 text-sm">
+      <span th:text="${mensagemErro}">Não foi possível criar o torneio.</span>
+    </div>
+
+    <div class="max-w-3xl mx-auto bg-gray-800/80 rounded-2xl border border-gray-700/80 p-6 md:p-8 shadow-xl">
+
+      <form th:action="@{/campeonatos/novo}" th:hx-post="@{/campeonatos/novo}" hx-push-url="true" method="post"
+        class="space-y-6">
+
+        <div>
+          <label for="nome" class="block text-sm font-semibold text-gray-200 mb-2">
+            Nome do Torneio <span class="text-orange-500">*</span>
+          </label>
+          <input type="text" name="nome" id="nome" maxlength="100" required placeholder="Ex: Copa Resenha 2026"
+            class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700 text-gray-100 placeholder-gray-500 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30" />
+        </div>
+
+        <div class="p-4 rounded-xl bg-orange-950/40 border border-orange-800/50 text-sm text-orange-200">
+          <p class="font-semibold text-orange-300">Marque exatamente 4, 8 ou 16 equipes.</p>
+          <p class="text-xs text-orange-200/80 mt-1">
+            O mata-mata precisa de uma quantidade que feche as chaves: 4 times (semifinais), 8 times (quartas) ou 16
+            times (oitavas).
+          </p>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm font-semibold text-gray-200">
+              Equipes participantes <span class="text-orange-500">*</span>
+            </span>
+
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-3 py-1 rounded-full border transition"
+                :class="valido ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/60' : 'bg-gray-900 text-gray-400 border-gray-700'">
+                <span x-text="sel.length">0</span> marcada(s)
+              </span>
+              <button type="button" @click="sel = []" x-show="sel.length > 0"
+                class="text-xs font-semibold text-gray-400 hover:text-white transition">
+                Limpar
+              </button>
+            </div>
+          </div>
+
+          <div th:if="${#lists.isEmpty(equipes)}"
+            class="p-8 rounded-xl border border-dashed border-gray-700 text-center text-gray-400">
+            <p class="text-sm font-medium text-gray-300">Nenhuma equipe cadastrada.</p>
+            <p class="text-xs text-gray-500 mt-1">Cadastre pelo menos 4 equipes antes de criar um torneio.</p>
+            <a th:href="@{/equipes/novo}" th:hx-get="@{/equipes/novo}" hx-push-url="true"
+              class="inline-block mt-3 text-xs font-bold text-orange-400 hover:text-orange-300">+ Cadastrar equipe</a>
+          </div>
+
+          <div th:unless="${#lists.isEmpty(equipes)}"
+            class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
+            <label th:each="e : ${equipes}"
+              class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none"
+              :class="sel.includes($el.querySelector('input').value) ? 'bg-orange-950/40 border-orange-500/70' : 'bg-gray-900 border-gray-700 hover:border-gray-500'">
+              <input type="checkbox" name="equipeIds" th:value="${e.id}" x-model="sel"
+                class="h-4 w-4 rounded border-gray-600 bg-gray-800 accent-orange-500" />
+              <span
+                class="inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full bg-gray-800 border border-gray-600 text-orange-400 font-extrabold text-sm"
+                th:text="${#strings.toUpperCase(#strings.substring(e.nome, 0, 1))}">E</span>
+              <span class="min-w-0">
+                <span class="block font-bold text-white text-sm truncate" th:text="${e.nome}">Nome da Equipe</span>
+                <span class="block text-xs text-gray-500 truncate" th:text="${e.responsavel}">Responsável</span>
+              </span>
+            </label>
+          </div>
+
+          <p class="mt-3 text-xs" :class="valido ? 'text-emerald-400' : 'text-gray-500'">
+            <span x-show="valido">Quantidade válida. Pode criar o torneio.</span>
+            <span x-show="!valido">Marque 4, 8 ou 16 equipes para liberar o botão de criar.</span>
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-gray-700/80 flex items-center justify-end gap-3">
+          <a th:href="@{/campeonatos}" th:hx-get="@{/campeonatos}" hx-push-url="true"
+            class="px-5 py-2.5 rounded-xl border border-gray-700 text-gray-300 hover:bg-gray-700/50 text-sm font-semibold transition">
+            Cancelar
+          </a>
+          <button type="submit" :disabled="!valido"
+            class="px-6 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm shadow-lg shadow-orange-500/20 transition transform hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-orange-500">
+            Criar e sortear chaves
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </main>
+</body>
+
+</html>

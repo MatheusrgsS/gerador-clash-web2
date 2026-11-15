@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+  <title>Campeonatos - Gerador Clash</title>
+</head>
+
+<body>
+  <main id="main" layout:fragment="conteudo" class="flex-1 p-6 md:p-8 bg-gray-900 text-gray-100 overflow-y-auto">
+
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Meus Torneios</h1>
+        </div>
+        <p class="text-sm text-gray-400 mt-1">Acompanhe os campeonatos mata-mata e lance os placares</p>
+      </div>
+
+      <a th:href="@{/campeonatos/novo}" th:hx-get="@{/campeonatos/novo}" hx-push-url="true"
+        class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition text-sm">
+        + Novo Torneio
+      </a>
+    </div>
+
+    <div th:if="${mensagemSucesso}"
+      class="mb-5 p-4 rounded-xl bg-emerald-950/60 border border-emerald-800 text-emerald-300 text-sm">
+      <span th:text="${mensagemSucesso}">Ação executada com sucesso.</span>
+    </div>
+    <div th:if="${mensagemErro}" class="mb-5 p-4 rounded-xl bg-red-950/60 border border-red-800 text-red-300 text-sm">
+      <span th:text="${mensagemErro}">Não foi possível concluir a ação.</span>
+    </div>
+
+    <div class="bg-gray-800/80 rounded-2xl border border-gray-700/80 shadow-xl overflow-hidden">
+
+      <form th:action="@{/campeonatos}" th:hx-get="@{/campeonatos}" hx-push-url="true" method="get"
+        class="p-4 border-b border-gray-700 bg-gray-900/40 flex flex-wrap gap-3">
+        <div class="flex-1 min-w-[220px]">
+          <input type="text" name="busca" th:value="${busca}" placeholder="Filtrar torneio por nome..."
+            class="w-full px-4 py-2.5 bg-gray-900 border border-gray-700 rounded-xl text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-orange-500 transition" />
+        </div>
+        <button type="submit"
+          class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition">
+          Pesquisar
+        </button>
+        <a th:if="${busca != null and !busca.isBlank()}" th:href="@{/campeonatos}" th:hx-get="@{/campeonatos}"
+          hx-push-url="true"
+          class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2.5 rounded-xl text-sm font-medium transition inline-flex items-center">
+          Limpar
+        </a>
+      </form>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-300">
+          <thead class="bg-gray-900/80 text-xs uppercase text-gray-400 tracking-wider border-b border-gray-700">
+            <tr>
+              <th class="px-6 py-4 w-16">ID</th>
+              <th class="px-6 py-4">Torneio</th>
+              <th class="px-6 py-4">Início</th>
+              <th class="px-6 py-4 text-center">Equipes</th>
+              <th class="px-6 py-4">Situação</th>
+              <th class="px-6 py-4">Campeão</th>
+              <th class="px-6 py-4 text-right">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-700/60">
+            <tr th:each="c : ${pagina.conteudo}" class="hover:bg-gray-700/30 transition">
+              <td class="px-6 py-4 font-mono text-xs text-gray-500" th:text="'#' + ${c.id}">#1</td>
+
+              <td class="px-6 py-4 font-bold text-white text-base" th:text="${c.nome}">Nome do Torneio</td>
+
+              <td class="px-6 py-4 text-gray-400 text-xs">
+                <span th:if="${c.dataInicio != null}"
+                  th:text="${#temporals.format(c.dataInicio, 'dd/MM/yyyy')}">01/01/2026</span>
+                <span th:if="${c.dataInicio == null}">-</span>
+              </td>
+
+              <td class="px-6 py-4 text-center">
+                <span
+                  class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-800 text-gray-300 border border-gray-700">
+                  <span th:text="${#lists.size(c.equipes)}" class="font-bold text-orange-400">0</span> times
+                </span>
+              </td>
+
+              <td class="px-6 py-4">
+                <span th:if="${c.campeao != null}"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-950/60 text-amber-300 border border-amber-700/60">
+                  Encerrado
+                </span>
+                <span th:if="${c.campeao == null}"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-orange-950/60 text-orange-400 border border-orange-800/60"
+                  th:text="${c.status}">Em andamento</span>
+              </td>
+
+              <td class="px-6 py-4">
+                <span th:if="${c.campeao != null}" class="inline-flex items-center gap-1.5 font-bold text-amber-300">
+                  🏆 <span th:text="${c.campeao.nome}">Campeão</span>
+                </span>
+                <span th:if="${c.campeao == null}" class="text-gray-600">A definir</span>
+              </td>
+
+              <td class="px-6 py-4 text-right space-x-2 whitespace-nowrap">
+                <a th:href="@{/campeonatos/{id}(id=${c.id})}" th:hx-get="@{/campeonatos/{id}(id=${c.id})}"
+                  hx-push-url="true"
+                  class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-orange-400 bg-orange-950/60 border border-orange-800/60 hover:bg-orange-500 hover:text-white rounded-lg transition"
+                  title="Ver chaveamento">
+                  🏆 Ver chaveamento
+                </a>
+                <form th:action="@{/campeonatos/{id}/excluir(id=${c.id})}"
+                  th:hx-post="@{/campeonatos/{id}/excluir(id=${c.id})}" hx-push-url="true"
+                  hx-confirm="Deseja realmente excluir este torneio? Todas as partidas serão removidas." method="post"
+                  class="inline">
+                  <button type="submit"
+                    class="px-2.5 py-1 text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-gray-800 rounded-lg transition">
+                    Excluir
+                  </button>
+                </form>
+              </td>
+            </tr>
+
+            <tr th:if="${pagina.vazia}">
+              <td colspan="7" class="px-6 py-12 text-center text-gray-400">
+                <p class="text-base font-medium text-gray-300">Nenhum torneio encontrado.</p>
+                <p class="text-xs text-gray-500 mt-1">Utilize o botão "Novo Torneio" para sortear as chaves de um
+                  mata-mata.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="p-4 border-t border-gray-700 bg-gray-900/30">
+        <th:block th:replace="~{components/paginacao :: paginacao(${pagina})}"></th:block>
+      </div>
+
+    </div>
+
+  </main>
+</body>
+
+</html>

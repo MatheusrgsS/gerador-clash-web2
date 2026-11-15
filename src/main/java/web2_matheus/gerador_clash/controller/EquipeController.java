@@ -24,12 +24,10 @@ public class EquipeController {
 
     private final EquipeService equipeService;
 
-    // Injeção de dependência via construtor padrão
     public EquipeController(EquipeService equipeService) {
         this.equipeService = equipeService;
     }
 
-    // 1. Listagem paginada com filtro por nome 
     @GetMapping
     public String listar(@RequestParam(required = false) String busca,
                          @RequestParam(defaultValue = "0") int page,
@@ -45,27 +43,24 @@ public class EquipeController {
         return "equipes/listar";
     }
 
-    // 2. Formulário de cadastro de nova equipe
     @GetMapping("/novo")
     public String novo(Model model) {
         model.addAttribute("equipe", new Equipe());
         return "equipes/form";
     }
 
-    // 3. Salvar nova equipe com validação
     @PostMapping("/novo")
     public String salvarNovo(@Valid @ModelAttribute("equipe") Equipe equipe,
                              BindingResult result,
                              RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "equipes/form"; // Devolve o formulário com os erros exibidos
+            return "equipes/form"; 
         }
         equipeService.salvar(equipe);
         redirectAttributes.addFlashAttribute("mensagemSucesso", "Equipe cadastrada com sucesso!");
         return "redirect:/equipes";
     }
 
-    // 4. Formulário de edição
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
         Equipe equipe = equipeService.buscarPorId(id);
@@ -73,7 +68,6 @@ public class EquipeController {
         return "equipes/form";
     }
 
-    // 5. Atualizar equipe existente
     @PostMapping("/{id}/editar")
     public String salvarEdicao(@PathVariable Long id,
                                @Valid @ModelAttribute("equipe") Equipe equipe,
@@ -88,7 +82,6 @@ public class EquipeController {
         return "redirect:/equipes";
     }
 
-    // 6. Excluir equipe
     @PostMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         equipeService.excluir(id);
@@ -96,7 +89,6 @@ public class EquipeController {
         return "redirect:/equipes";
     }
 
-    // 7. Visualizar detalhes da equipe e gerenciar jogadores
     @GetMapping("/{id}/jogadores")
     public String gerenciarJogadores(@PathVariable Long id, Model model) {
         Equipe equipe = equipeService.buscarPorId(id);
@@ -105,7 +97,6 @@ public class EquipeController {
         return "equipes/jogadores";
     }
 
-    // 8. Adicionar jogador à equipe com validação
     @PostMapping("/{id}/jogadores")
     public String adicionarJogador(@PathVariable Long id,
                                    @Valid @ModelAttribute("novoJogador") Jogador jogador,
@@ -122,7 +113,6 @@ public class EquipeController {
         return "redirect:/equipes/" + id + "/jogadores";
     }
 
-    // 9. Remover jogador da equipe
     @PostMapping("/{id}/jogadores/{jogadorId}/excluir")
     public String removerJogador(@PathVariable Long id,
                                  @PathVariable Long jogadorId,

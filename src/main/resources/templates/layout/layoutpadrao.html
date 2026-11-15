@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
   <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Gerador de Clash</title>
-  <link rel="shortcut icon" th:href="@{src\main\resources\static\images\logo.png}" />
+  <link rel="shortcut icon" th:href="@{/images/logo.png}" />
   <!-- Estilo Principal do Template -->
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
   <!-- Estilo do MDDateTimePicker -->
@@ -44,9 +44,9 @@
   <!-- <meta name="_csrf_header" th:content="${_csrf?.headerName}" /> -->
 </head>
 
-<body hx-target:inherited="#main" 
-      hx-select="#main"
-      hx-status:inherited:4xx="target:#main" 
+<body hx-target:inherited="#main"
+      hx-select:inherited="#main"
+      hx-status:inherited:4xx="target:#main"
       hx-status:inherited:5xx="target:#main"
       x-data="{ sidebarAberta: true }">
   <!-- Container da página -->
