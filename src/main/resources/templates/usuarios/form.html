@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+  <title th:text="${usuario.id == null ? 'Novo Usuário - Gerador Clash' : 'Editar Usuário - Gerador Clash'}">Formulário de Usuário</title>
+</head>
+
+<body>
+  <main id="main" layout:fragment="conteudo" class="flex-1 p-6 md:p-8 bg-gray-900 text-gray-100 overflow-y-auto">
+
+    <!-- Cabeçalho e Navegação -->
+    <div class="max-w-2xl mx-auto mb-6">
+      <div class="flex items-center gap-2 text-xs text-gray-500 mb-2 uppercase tracking-wider font-semibold">
+        <a th:href="@{/usuarios}" class="hover:text-orange-400 transition">Usuários</a>
+        <span>/</span>
+        <span class="text-gray-300" th:text="${usuario.id == null ? 'Novo Usuário' : 'Editar Usuário'}">Cadastro</span>
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight"
+          th:text="${usuario.id == null ? 'Cadastrar Novo Usuário' : 'Editar Usuário'}">
+        Cadastro de Usuário
+      </h1>
+      <p class="text-sm text-gray-400 mt-1">Defina as credenciais e o nível de acesso do usuário no sistema.</p>
+    </div>
+
+    <!-- Card do Formulário -->
+    <div class="max-w-2xl mx-auto bg-gray-800/80 rounded-2xl border border-gray-700/80 p-6 md:p-8 shadow-xl">
+
+      <!-- Alerta de erro geral (ex: username já cadastrado) -->
+      <div th:if="${mensagemErro}"
+           class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+        </svg>
+        <span th:text="${mensagemErro}">Mensagem de erro</span>
+      </div>
+
+      <form th:action="${usuario.id == null} ? @{/usuarios/novo} : @{/usuarios/{id}/editar(id=${usuario.id})}"
+            th:object="${usuario}" method="post" class="space-y-6">
+
+        <!-- ID oculto na edição -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Campo: Nome Completo -->
+        <div>
+          <label for="nome" class="block text-sm font-semibold text-gray-200 mb-2">
+            Nome Completo <span class="text-orange-500">*</span>
+          </label>
+          <input type="text" th:field="*{nome}" id="nome" placeholder="Ex: Maria da Silva"
+                 th:class="|w-full px-4 py-3 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('nome') ? 'border-red-500 focus:ring-2 focus:ring-red-500/50' : 'border-gray-700 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30'}|" />
+          <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-xs text-red-400 mt-1.5 font-medium"></p>
+        </div>
+
+        <!-- Campo: Login / Username -->
+        <div>
+          <label for="username" class="block text-sm font-semibold text-gray-200 mb-2">
+            Nome de Usuário (Login) <span class="text-orange-500">*</span>
+          </label>
+          <input type="text" th:field="*{username}" id="username" placeholder="Ex: maria.silva"
+                 th:class="|w-full px-4 py-3 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('username') ? 'border-red-500 focus:ring-2 focus:ring-red-500/50' : 'border-gray-700 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30'}|" />
+          <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-xs text-red-400 mt-1.5 font-medium"></p>
+        </div>
+
+        <!-- Campo: Senha -->
+        <div>
+          <label for="senha" class="block text-sm font-semibold text-gray-200 mb-2">
+            Senha <span th:if="${usuario.id == null}" class="text-orange-500">*</span>
+            <span th:if="${usuario.id != null}" class="text-xs text-gray-400 font-normal">(Deixe em branco para manter a senha atual)</span>
+          </label>
+          <input type="password" th:field="*{senha}" id="senha" placeholder="Digite a senha..."
+                 th:class="|w-full px-4 py-3 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('senha') ? 'border-red-500 focus:ring-2 focus:ring-red-500/50' : 'border-gray-700 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30'}|" />
+          <p th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}" class="text-xs text-red-400 mt-1.5 font-medium"></p>
+        </div>
+
+        <!-- Campo: Papéis / Permissões (Pelo menos 2 tipos conforme exigência do trabalho) -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-200 mb-2">
+            Papéis / Permissões de Acesso <span class="text-orange-500">*</span>
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-gray-900 rounded-xl border border-gray-700">
+            <div th:each="papel : ${todosPapeis}" class="flex items-start gap-3">
+              <input type="checkbox"
+                     th:id="|papel_${papel.id}|"
+                     name="papelIds"
+                     th:value="${papel.id}"
+                     th:checked="${usuario.papelIds.contains(papel.id)}"
+                     class="mt-1 h-4 w-4 rounded border-gray-700 text-orange-600 focus:ring-orange-500 focus:ring-offset-gray-900" />
+              <label th:for="|papel_${papel.id}|" class="text-xs cursor-pointer">
+                <span class="block font-bold text-gray-200"
+                      th:text="${papel.nome == 'ROLE_ADMIN' ? 'ADMIN (Administrador)' : (papel.nome == 'ROLE_ORGANIZADOR' ? 'ORGANIZADOR (Torneios e Equipes)' : papel.nome)}">
+                  Papel
+                </span>
+                <span class="block text-[11px] text-gray-400"
+                      th:text="${papel.nome == 'ROLE_ADMIN' ? 'Acesso total ao sistema e cadastro de novos usuários.' : 'Pode criar torneios, cadastrar equipes e inserir placares.'}">
+                  Descrição do papel
+                </span>
+              </label>
+            </div>
+          </div>
+          <p th:if="${#fields.hasErrors('papelIds')}" th:errors="*{papelIds}" class="text-xs text-red-400 mt-1.5 font-medium"></p>
+        </div>
+
+        <!-- Campo: Usuário Ativo -->
+        <div class="flex items-center gap-3 pt-2">
+          <input type="checkbox" th:field="*{ativo}" id="ativo"
+                 class="h-4 w-4 rounded border-gray-700 text-orange-600 focus:ring-orange-500 focus:ring-offset-gray-900" />
+          <label for="ativo" class="text-sm font-medium text-gray-200 cursor-pointer">
+            Usuário Ativo (pode fazer login no sistema)
+          </label>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-700/80">
+          <a th:href="@{/usuarios}"
+             class="px-5 py-2.5 rounded-xl bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold text-sm transition">
+            Cancelar
+          </a>
+          <button type="submit"
+                  class="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-sm shadow-lg shadow-orange-950/50 transition">
+            <span th:text="${usuario.id == null ? 'Salvar Usuário' : 'Atualizar Dados'}">Salvar</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </main>
+</body>
+</html>

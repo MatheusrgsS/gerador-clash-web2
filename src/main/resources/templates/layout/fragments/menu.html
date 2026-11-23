@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <div th:fragment="menu" class="space-y-4" id="menu">
 
@@ -8,7 +9,8 @@
     <button th:replace="~{components/menu-item-button :: menu-item-button('Equipes', ~{::#equipe-icon})}"></button>
 
     <div x-show="open" class="space-y-3 ps-8 pt-2">
-      <div th:replace="~{components/menu-item-option :: menu-item-option('Cadastrar', @{/equipes/novo}, ~{::#cadastrar-icon})}"></div>
+      <div sec:authorize="hasAnyRole('ADMIN', 'ORGANIZADOR')"
+           th:replace="~{components/menu-item-option :: menu-item-option('Cadastrar', @{/equipes/novo}, ~{::#cadastrar-icon})}"></div>
       <div th:replace="~{components/menu-item-option :: menu-item-option('Pesquisar', @{/equipes}, ~{::#pesquisar-icon})}"></div>
     </div>
   </div>
@@ -18,8 +20,19 @@
     <button th:replace="~{components/menu-item-button :: menu-item-button('Campeonatos', ~{::#torneio-icon})}"></button>
 
     <div x-show="open" class="space-y-3 ps-8 pt-2">
-      <div th:replace="~{components/menu-item-option :: menu-item-option('Novo Torneio', @{/campeonatos/novo}, ~{::#cadastrar-icon})}"></div>
+      <div sec:authorize="hasAnyRole('ADMIN', 'ORGANIZADOR')"
+           th:replace="~{components/menu-item-option :: menu-item-option('Novo Torneio', @{/campeonatos/novo}, ~{::#cadastrar-icon})}"></div>
       <div th:replace="~{components/menu-item-option :: menu-item-option('Meus Torneios', @{/campeonatos}, ~{::#pesquisar-icon})}"></div>
+    </div>
+  </div>
+
+  <!-- 3o Item: Usuários (Segurança da Etapa 6 - Apenas Administrador) -->
+  <div x-data="{ open: false }" sec:authorize="hasRole('ADMIN')">
+    <button th:replace="~{components/menu-item-button :: menu-item-button('Usuários', ~{::#usuario-icon})}"></button>
+
+    <div x-show="open" class="space-y-3 ps-8 pt-2">
+      <div th:replace="~{components/menu-item-option :: menu-item-option('Novo Usuário', @{/usuarios/novo}, ~{::#cadastrar-icon})}"></div>
+      <div th:replace="~{components/menu-item-option :: menu-item-option('Gerenciar', @{/usuarios}, ~{::#pesquisar-icon})}"></div>
     </div>
   </div>
 
@@ -31,6 +44,11 @@
 
     <svg id="torneio-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
       <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.774-3.333 3.03V13h2a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h2v-2.044c-1.455-.256-2.543-1.165-3.333-3.03a3 3 0 1 1-1.133-5.89A33 33 0 0 1 2.5.5"/>
+    </svg>
+
+    <svg id="usuario-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+      <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
     </svg>
 
     <svg id="cadastrar-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">

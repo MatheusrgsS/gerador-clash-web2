@@ -39,9 +39,18 @@
 
   <!-- Aplicação Principal (Global) -->
   <script th:src="@{/js/app.js}" defer></script>
-  <!-- Isso está aqui apenas para o 1o acesso depois de logar -->
-  <!-- <meta name="_csrf" th:content="${_csrf?.token}" /> -->
-  <!-- <meta name="_csrf_header" th:content="${_csrf?.headerName}" /> -->
+  <!-- Suporte a CSRF para requisições seguras e HTMX -->
+  <meta name="_csrf" th:content="${_csrf?.token}" />
+  <meta name="_csrf_header" th:content="${_csrf?.headerName}" />
+  <script>
+    document.addEventListener('htmx:configRequest', function(evt) {
+      const token = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+      const header = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+      if (token && header) {
+        evt.detail.headers[header] = token;
+      }
+    });
+  </script>
 </head>
 
 <body hx-target:inherited="#main"

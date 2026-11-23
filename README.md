@@ -83,14 +83,27 @@ chmod +x mvnw
 
 ---
 
-## 🌐 Acessando o Sistema
+## 🌐 Acessando o Sistema (Seguro via HTTPS)
 
-Assim que a mensagem `Started GeradorClashApplication` aparecer no console, acesse no navegador:
+Assim que a mensagem `Started GeradorClashApplication` aparecer no console, acesse no navegador via **HTTPS**:
 
-- **Página Inicial (Lobby & Arenas):** [http://localhost:8080/](http://localhost:8080/)
-- **Listagem de Equipes:** [http://localhost:8080/equipes](http://localhost:8080/equipes)
-- **Cadastrar Nova Equipe:** [http://localhost:8080/equipes/novo](http://localhost:8080/equipes/novo)
-- **Elenco de Jogadores:** Acesso através do botão *⚽ Gerenciar Elenco* na listagem de equipes.
+- **Página Inicial (Lobby & Arenas):** [https://localhost:8443/](https://localhost:8443/)
+- **Tela de Login:** [https://localhost:8443/login](https://localhost:8443/login)
+- **Gerenciamento de Usuários (Exclusivo ADMIN):** [https://localhost:8443/usuarios](https://localhost:8443/usuarios)
+- **Listagem de Equipes:** [https://localhost:8443/equipes](https://localhost:8443/equipes)
+- **Meus Torneios:** [https://localhost:8443/campeonatos](https://localhost:8443/campeonatos)
+
+> **Nota sobre o certificado HTTPS:** Como o certificado SSL local foi autoassinado para desenvolvimento, o navegador exibirá um alerta de segurança na primeira vez. Basta clicar em "Avançado" e prosseguir para `localhost`.
+
+---
+
+## 🔐 Credenciais Padrão para Avaliação (Etapa 6 - Spring Security)
+
+| Tipo de Usuário | Login | Senha | Nível de Acesso |
+|---|---|---|---|
+| **Administrador** | `admin` | `admin123` | Acesso completo. Gerencia e cadastra novos usuários (`/usuarios`), equipes e campeonatos. |
+| **Organizador** | `organizador` | `organizador123` | Cria novos torneios, cadastra equipes e insere placares. Sem acesso à gestão de usuários. |
+| **Visitante** (sem login) | - | - | Acesso público apenas para leitura (Home/Arenas, Chaveamento e Equipes). |
 
 ---
 
@@ -98,6 +111,7 @@ Assim que a mensagem `Started GeradorClashApplication` aparecer no console, aces
 
 - `V1__criar_tabelas.sql`: Criação das tabelas de `arena`, `equipe`, `jogador`, `campeonato`, `partida` e associações.
 - `V2__popular_arenas.sql`: Carga inicial das 10 arenas oficiais do torneio.
+- `V3__criar_tabelas_usuarios.sql`: Criação das tabelas de segurança (`usuario`, `papel`, `usuario_papel`) e inserção dos papéis `ROLE_ADMIN` e `ROLE_ORGANIZADOR`.
 
 ---
 

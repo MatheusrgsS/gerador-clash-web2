@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+  <title>Gerenciamento de Usuários - Gerador Clash</title>
+</head>
+
+<body>
+  <main id="main" layout:fragment="conteudo" class="flex-1 p-6 md:p-8 bg-gray-900 text-gray-100 overflow-y-auto">
+
+    <!-- Cabeçalho -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div>
+        <div class="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-wider font-semibold">
+          <span>Administração</span>
+          <span>/</span>
+          <span class="text-gray-300">Segurança</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mt-1">
+          Usuários do Sistema
+        </h1>
+        <p class="text-sm text-gray-400">Controle de acesso, papéis e credenciais (Etapa 6 - Spring Security)</p>
+      </div>
+
+      <div>
+        <a th:href="@{/usuarios/novo}"
+           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-semibold text-sm shadow-lg shadow-orange-950/40 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+          </svg>
+          <span>Novo Usuário</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Barra de Busca -->
+    <div class="bg-gray-800/80 rounded-2xl border border-gray-700/80 p-4 mb-6 shadow-md">
+      <form th:action="@{/usuarios}" method="get" class="flex gap-3">
+        <div class="relative flex-1">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+          </span>
+          <input type="text" name="busca" th:value="${busca}" placeholder="Pesquisar por nome ou login..."
+                 class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-gray-100 placeholder-gray-500 text-sm outline-none transition focus:border-orange-500" />
+        </div>
+        <button type="submit"
+                class="px-5 py-2.5 rounded-xl bg-gray-700 hover:bg-gray-600 text-white font-medium text-sm transition">
+          Buscar
+        </button>
+        <a th:if="${busca != null and !busca.empty}" th:href="@{/usuarios}"
+           class="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium text-sm border border-gray-700 transition flex items-center">
+          Limpar
+        </a>
+      </form>
+    </div>
+
+    <!-- Tabela de Usuários -->
+    <div class="bg-gray-800/80 rounded-2xl border border-gray-700/80 overflow-hidden shadow-xl">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-300">
+          <thead class="bg-gray-900/80 text-xs uppercase tracking-wider text-gray-400 border-b border-gray-700">
+            <tr>
+              <th scope="col" class="py-3.5 px-4 font-semibold">ID</th>
+              <th scope="col" class="py-3.5 px-4 font-semibold">Nome</th>
+              <th scope="col" class="py-3.5 px-4 font-semibold">Login / Usuário</th>
+              <th scope="col" class="py-3.5 px-4 font-semibold">Papéis / Permissões</th>
+              <th scope="col" class="py-3.5 px-4 font-semibold">Status</th>
+              <th scope="col" class="py-3.5 px-4 font-semibold text-right">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-700/60">
+            <tr th:each="user : ${pagina.conteudo}" class="hover:bg-gray-750 transition">
+              <td class="py-3.5 px-4 font-mono text-xs text-gray-500" th:text="${user.id}">1</td>
+              <td class="py-3.5 px-4 font-semibold text-white" th:text="${user.nome}">Administrador</td>
+              <td class="py-3.5 px-4 font-mono text-gray-300 text-xs" th:text="${user.username}">admin</td>
+              <td class="py-3.5 px-4">
+                <div class="flex flex-wrap gap-1.5">
+                  <span th:each="p : ${user.papeis}"
+                        th:text="${p.nome == 'ROLE_ADMIN' ? 'ADMIN' : (p.nome == 'ROLE_ORGANIZADOR' ? 'ORGANIZADOR' : p.nome)}"
+                        th:class="|px-2.5 py-0.5 rounded-md text-[11px] font-bold ${p.nome == 'ROLE_ADMIN' ? 'bg-orange-950 text-orange-400 border border-orange-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'}|">
+                    ADMIN
+                  </span>
+                </div>
+              </td>
+              <td class="py-3.5 px-4">
+                <span th:if="${user.ativo}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  Ativo
+                </span>
+                <span th:unless="${user.ativo}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/30">
+                  <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                  Inativo
+                </span>
+              </td>
+              <td class="py-3.5 px-4 text-right">
+                <div class="inline-flex items-center gap-2">
+                  <a th:href="@{/usuarios/{id}/editar(id=${user.id})}"
+                     class="p-1.5 rounded-lg bg-gray-700/60 hover:bg-gray-700 text-gray-300 hover:text-white transition"
+                     title="Editar Usuário">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                    </svg>
+                  </a>
+
+                  <!-- Alternar Status (Ativar / Desativar) -->
+                  <form th:action="@{/usuarios/{id}/status(id=${user.id})}" method="post" class="inline">
+                    <button type="submit"
+                            th:title="${user.ativo ? 'Desativar Usuário' : 'Ativar Usuário'}"
+                            class="p-1.5 rounded-lg bg-gray-700/60 hover:bg-gray-700 text-gray-300 hover:text-amber-400 transition">
+                      <svg th:if="${user.ativo}" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2M3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1z"/>
+                      </svg>
+                      <svg th:unless="${user.ativo}" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                      </svg>
+                    </button>
+                  </form>
+
+                  <!-- Excluir (apenas se não for o próprio admin logado) -->
+                  <form th:if="${user.username != 'admin'}"
+                        th:action="@{/usuarios/{id}/excluir(id=${user.id})}"
+                        method="post" class="inline"
+                        onsubmit="return confirm('Deseja realmente remover este usuário?');">
+                    <button type="submit" class="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition" title="Excluir Usuário">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                      </svg>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(pagina.conteudo)}">
+              <td colspan="6" class="py-8 text-center text-gray-500">
+                Nenhum usuário encontrado.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginação Padrão -->
+      <div th:replace="~{components/paginacao :: paginacao(${pagina})}"></div>
+    </div>
+
+  </main>
+</body>
+</html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.thymeleaf.org">
+  xmlns:layout="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
   <title>Equipes - Gerador Clash</title>
@@ -19,9 +20,10 @@
         <p class="text-sm text-gray-400 mt-1">Gerencie os times e seus respectivos elencos</p>
       </div>
 
-      <!-- Botão para cadastrar nova equipe -->
-      <a th:href="@{/equipes/novo}"
-        class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition text-sm">
+      <!-- Botão para cadastrar nova equipe (Apenas Usuários com Papel) -->
+      <a sec:authorize="hasAnyRole('ADMIN', 'ORGANIZADOR')"
+         th:href="@{/equipes/novo}"
+         class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition text-sm">
         + Nova Equipe
       </a>
     </div>
@@ -84,13 +86,15 @@
                 <a th:href="@{/equipes/{id}/jogadores(id=${equipe.id})}"
                   class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-orange-400 bg-orange-950/60 border border-orange-800/60 hover:bg-orange-500 hover:text-white rounded-lg transition"
                   title="Gerenciar Elenco">
-                  ⚽ Gerenciar Elenco
+                  ⚽ Elenco
                 </a>
-                <a th:href="@{/equipes/{id}/editar(id=${equipe.id})}"
+                <a sec:authorize="hasAnyRole('ADMIN', 'ORGANIZADOR')"
+                   th:href="@{/equipes/{id}/editar(id=${equipe.id})}"
                   class="inline-block px-2.5 py-1 text-xs font-semibold text-blue-400 hover:text-blue-300 hover:bg-gray-800 rounded-lg transition">
                   Editar
                 </a>
-                <form th:action="@{/equipes/{id}/excluir(id=${equipe.id})}" method="post" class="inline"
+                <form sec:authorize="hasRole('ADMIN')"
+                      th:action="@{/equipes/{id}/excluir(id=${equipe.id})}" method="post" class="inline"
                   onsubmit="return confirm('Deseja realmente excluir esta equipe?');">
                   <button type="submit"
                     class="px-2.5 py-1 text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-gray-800 rounded-lg transition">

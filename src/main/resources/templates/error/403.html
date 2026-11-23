@@ -3,14 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Página de Erro 403</title>
+    <title>Acesso Negado (403) - Gerador Clash</title>
   </head>
   <body>
-    <!-- conteudo principal -->
-    <main layout:fragment="conteudo" th:fragment="conteudo" id="main" class="flex flex-col align-middle justify-center w-full m-10">
-      <img th:src="@{/images/403.png}" class="mx-auto block mt-5" alt="Erro 403" />
-      <h3 class="text-center mt-5 mb-5">Você não tem permissão para acessar o recurso solicitado. <a th:href="@{/}">Volte para a página principal.</a></h3>
+    <!-- Conteúdo principal -->
+    <main layout:fragment="conteudo" th:fragment="conteudo" id="main" class="flex-1 flex items-center justify-center p-6 bg-gray-900 text-gray-100">
+      <div class="max-w-md w-full text-center bg-gray-800/80 border border-gray-700/80 rounded-3xl p-8 shadow-2xl backdrop-blur-sm">
+        <img th:src="@{/images/403.png}" class="mx-auto block h-40 w-auto object-contain mb-6 drop-shadow-lg" alt="Erro 403 - Acesso Negado" />
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/30 uppercase tracking-widest mb-3">
+          Código 403 • Acesso Restrito
+        </span>
+        <h2 class="text-2xl font-extrabold text-white mb-2">Acesso Negado</h2>
+        <p class="text-sm text-gray-400 mb-6">
+          Seu perfil de usuário não possui as permissões necessárias para acessar este recurso.
+        </p>
+        <a th:href="@{/}"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-sm shadow-lg shadow-orange-950/50 transition transform hover:-translate-y-0.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+          </svg>
+          <span>Retornar ao Início</span>
+        </a>
+      </div>
     </main>
-    <!-- !conteudo principal -->
   </body>
 </html>

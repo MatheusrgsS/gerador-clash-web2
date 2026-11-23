@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.thymeleaf.org">
+  xmlns:layout="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
   <title>Campeonatos - Gerador Clash</title>
@@ -18,7 +19,8 @@
         <p class="text-sm text-gray-400 mt-1">Acompanhe os campeonatos mata-mata e lance os placares</p>
       </div>
 
-      <a th:href="@{/campeonatos/novo}" th:hx-get="@{/campeonatos/novo}" hx-push-url="true"
+      <a sec:authorize="hasAnyRole('ADMIN', 'ORGANIZADOR')"
+         th:href="@{/campeonatos/novo}" th:hx-get="@{/campeonatos/novo}" hx-push-url="true"
         class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition text-sm">
         + Novo Torneio
       </a>

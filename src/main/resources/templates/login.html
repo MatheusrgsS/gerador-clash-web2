@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Gerador Clash</title>
+  <link rel="shortcut icon" th:href="@{/images/logo.png}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-950 text-gray-100 flex min-h-screen items-center justify-center p-4">
+
+  <div class="w-full max-w-md">
+    
+    <!-- Logo e Cabeçalho -->
+    <div class="text-center mb-8">
+      <a th:href="@{/}" class="inline-flex items-center gap-2 mb-3 group">
+        <img th:src="@{/images/logo_semfundo.png}" alt="Gerador Clash"
+             class="h-14 w-auto object-contain transition-transform group-hover:scale-105" />
+        <span class="text-3xl font-extrabold tracking-tight text-white">
+          Gerador <span class="text-emerald-400">Clash</span>
+        </span>
+      </a>
+      <p class="text-sm text-gray-400">Entre com suas credenciais para gerenciar torneios e equipes</p>
+    </div>
+
+    <!-- Card de Login -->
+    <div class="bg-gray-900/90 border border-gray-800 rounded-3xl p-8 shadow-2xl backdrop-blur-sm">
+      
+      <!-- Alerta de Erro de Autenticação -->
+      <div th:if="${param.error}"
+           class="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+        </svg>
+        <span>Usuário ou senha incorretos. Verifique suas credenciais.</span>
+      </div>
+
+      <!-- Alerta de Logout -->
+      <div th:if="${param.logout}"
+           class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>Você saiu do sistema com segurança.</span>
+      </div>
+
+      <!-- Formulário de Login -->
+      <form th:action="@{/login}" method="post" class="space-y-5">
+
+        <!-- Campo Usuário -->
+        <div>
+          <label for="username" class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+            Usuário / Login
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+              </svg>
+            </span>
+            <input type="text" id="username" name="username" required autofocus placeholder="Digite seu usuário..."
+                   class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-950 border border-gray-800 text-gray-100 placeholder-gray-500 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30" />
+          </div>
+        </div>
+
+        <!-- Campo Senha -->
+        <div>
+          <label for="password" class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+            Senha
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+              </svg>
+            </span>
+            <input type="password" id="password" name="password" required placeholder="Digite sua senha..."
+                   class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-950 border border-gray-800 text-gray-100 placeholder-gray-500 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30" />
+          </div>
+        </div>
+
+        <!-- Botão Entrar -->
+        <button type="submit"
+                class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-sm shadow-lg shadow-orange-950/50 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0">
+          Acessar Sistema
+        </button>
+
+      </form>
+
+      <!-- Dica de Contas para Testes (Etapa 6 - Avaliação do Professor) -->
+      <div class="mt-8 pt-6 border-t border-gray-800/80 text-xs text-gray-400 space-y-2">
+        <p class="font-semibold text-gray-300 uppercase tracking-wider">Perfis para demonstração:</p>
+        <div class="bg-gray-950/60 p-3 rounded-xl space-y-1.5 border border-gray-800">
+          <div class="flex justify-between items-center">
+            <span class="text-orange-400 font-medium">Administrador:</span>
+            <span class="font-mono text-gray-300">admin / admin123</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-emerald-400 font-medium">Organizador:</span>
+            <span class="font-mono text-gray-300">organizador / organizador123</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Voltar ao Início -->
+    <div class="text-center mt-6">
+      <a th:href="@{/}" class="text-xs text-gray-500 hover:text-orange-400 transition inline-flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+        <span>Voltar para a página pública inicial</span>
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>
