@@ -15,6 +15,9 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +38,12 @@ public class Campeonato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome do campeonato é obrigatório.")
+    @Size(min = 3, max = 100, message = "O nome do campeonato deve ter entre 3 e 100 caracteres.")
     @Column(nullable = false, length = 100)
     private String nome;
 
+    @NotNull(message = "A data de início é obrigatória.")
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
 

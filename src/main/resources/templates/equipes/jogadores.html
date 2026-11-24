@@ -50,7 +50,7 @@
               <label for="nome" class="block text-xs font-semibold text-gray-300 mb-1.5 uppercase tracking-wider">
                 Nome do Jogador <span class="text-orange-500">*</span>
               </label>
-              <input type="text" th:field="*{nome}" id="nome" placeholder="Ex: Roberto Silva"
+              <input type="text" th:field="*{nome}" id="nome" required minlength="2" maxlength="100" placeholder="Ex: Roberto Silva"
                      th:class="|w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('nome') ? 'border-red-500' : 'border-gray-700 focus:border-orange-500'}|" />
               <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-xs text-red-400 mt-1"></p>
             </div>
@@ -59,7 +59,7 @@
               <label for="posicao" class="block text-xs font-semibold text-gray-300 mb-1.5 uppercase tracking-wider">
                 Posição <span class="text-orange-500">*</span>
               </label>
-              <input type="text" th:field="*{posicao}" id="posicao" placeholder="Ex: Atacante, Meio-Campo, Goleiro..."
+              <input type="text" th:field="*{posicao}" id="posicao" required minlength="2" maxlength="50" placeholder="Ex: Atacante, Meio-Campo, Goleiro..."
                      th:class="|w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('posicao') ? 'border-red-500' : 'border-gray-700 focus:border-orange-500'}|" />
               <p th:if="${#fields.hasErrors('posicao')}" th:errors="*{posicao}" class="text-xs text-red-400 mt-1"></p>
             </div>
@@ -68,7 +68,7 @@
               <label for="numeroCamisa" class="block text-xs font-semibold text-gray-300 mb-1.5 uppercase tracking-wider">
                 Nº da Camisa (1 a 99) <span class="text-orange-500">*</span>
               </label>
-              <input type="number" th:field="*{numeroCamisa}" id="numeroCamisa" min="1" max="99" placeholder="10"
+              <input type="number" th:field="*{numeroCamisa}" id="numeroCamisa" min="1" max="99" step="1" inputmode="numeric" required placeholder="10"
                      th:class="|w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border text-gray-100 placeholder-gray-500 text-sm outline-none transition ${#fields.hasErrors('numeroCamisa') ? 'border-red-500' : 'border-gray-700 focus:border-orange-500'}|" />
               <p th:if="${#fields.hasErrors('numeroCamisa')}" th:errors="*{numeroCamisa}" class="text-xs text-red-400 mt-1"></p>
             </div>

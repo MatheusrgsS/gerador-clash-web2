@@ -63,6 +63,10 @@ public class CampeonatoService {
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("O nome do campeonato é obrigatório.");
         }
+        String nomeLimpo = nome.trim();
+        if (nomeLimpo.length() < 3 || nomeLimpo.length() > 100) {
+            throw new IllegalArgumentException("O nome do campeonato deve ter entre 3 e 100 caracteres.");
+        }
 
         if (equipeIds == null || equipeIds.isEmpty()) {
             throw new IllegalArgumentException("Selecione as equipes participantes.");

@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +36,13 @@ public class Equipe {
     private String nome;
 
     @NotBlank(message = "O nome do responsável é obrigatório.")
-    @Size(max = 100, message = "O responsável deve ter no máximo 100 caracteres.")
+    @Size(min = 2, max = 100, message = "O responsável deve ter entre 2 e 100 caracteres.")
     @Column(length = 100)
     private String responsavel;
 
     @NotBlank(message = "O telefone de contato é obrigatório.")
     @Size(max = 20, message = "O telefone deve ter no máximo 20 caracteres.")
+    @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}$", message = "Informe um telefone válido, ex: (34) 99002-8922.")
     @Column(length = 20)
     private String telefone;
 

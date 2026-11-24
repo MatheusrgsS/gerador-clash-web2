@@ -107,6 +107,17 @@ Assim que a mensagem `Started GeradorClashApplication` aparecer no console, aces
 
 ---
 
+## 📊 Relatório em PDF com Sub-relatórios 1:N (Etapa 7 - JasperReports)
+
+O sistema possui emissão de relatórios úteis via Web com o **JasperReports**, contendo relacionamento de um para muitos (sub-relatórios):
+- **Súmula do Torneio:** Exibe todas as partidas de um campeonato selecionado, arenas alocadas, placares e, para cada confronto, aciona os **sub-relatórios** para renderizar os elencos de atletas/jogadores de cada equipe (`Equipe` $\rightarrow$ `Jogadores`).
+- **Acesso direto via Web:**
+  - `GET /relatorios/campeonatos/{id}/pdf`
+  - Botão **📄 PDF** na tabela de campeonatos.
+  - Botão **📄 Relatório PDF** dentro da página de chaveamento do torneio.
+
+---
+
 ## 📂 Estrutura das Migrações de Banco (Flyway)
 
 - `V1__criar_tabelas.sql`: Criação das tabelas de `arena`, `equipe`, `jogador`, `campeonato`, `partida` e associações.

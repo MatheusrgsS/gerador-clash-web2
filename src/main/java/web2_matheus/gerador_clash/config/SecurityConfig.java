@@ -24,21 +24,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                // Recursos estáticos e públicos
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/vendors/**", "/webjars/**", "/favicon.ico").permitAll()
                 .requestMatchers("/", "/index.html", "/login", "/error/**").permitAll()
-
-                // Visualização de campeonatos e equipes liberada para visitantes
                 .requestMatchers(HttpMethod.GET, "/campeonatos", "/campeonatos/*", "/equipes").permitAll()
-
-                // Acesso exclusivo do Administrador para gerenciar usuários (Requisito 8)
                 .requestMatchers("/usuarios/**").hasRole("ADMIN")
-
-                // Acesso para Administradores e Organizadores (gerenciar torneios e equipes)
                 .requestMatchers("/campeonatos/**").hasAnyRole("ADMIN", "ORGANIZADOR")
                 .requestMatchers("/equipes/**").hasAnyRole("ADMIN", "ORGANIZADOR")
-
-                // Qualquer outra rota precisa de autenticação
+                .requestMatchers("/relatorios/**").hasAnyRole("ADMIN", "ORGANIZADOR")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

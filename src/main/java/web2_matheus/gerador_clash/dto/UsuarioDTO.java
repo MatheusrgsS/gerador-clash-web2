@@ -2,6 +2,7 @@ package web2_matheus.gerador_clash.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class UsuarioDTO {
 
     @NotBlank(message = "O nome de usuário (login) é obrigatório")
     @Size(min = 3, max = 50, message = "O login deve ter entre 3 e 50 caracteres")
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "O login deve conter apenas letras, números, ponto, hífen ou underline")
     private String username;
 
     private String senha;

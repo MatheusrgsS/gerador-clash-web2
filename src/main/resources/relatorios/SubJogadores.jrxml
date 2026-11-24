@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="SubJogadores"
+              pageWidth="265" pageHeight="842"
+              columnWidth="265"
+              leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0"
+              uuid="a8b7c6d5-e4f3-2109-8765-43210fedcba9">
+
+    <parameter name="EQUIPE_ID" class="java.lang.Long"/>
+
+    <queryString>
+        <![CDATA[
+        SELECT
+            j.id,
+            j.nome,
+            j.posicao,
+            j.numero_camisa
+        FROM jogador j
+        WHERE j.equipe_id = $P{EQUIPE_ID}
+        ORDER BY j.numero_camisa ASC, j.nome ASC
+        ]]>
+    </queryString>
+
+    <field name="id" class="java.lang.Long"/>
+    <field name="nome" class="java.lang.String"/>
+    <field name="posicao" class="java.lang.String"/>
+    <field name="numero_camisa" class="java.lang.Integer"/>
+
+    <columnHeader>
+        <band height="18" splitType="Stretch">
+            <staticText>
+                <reportElement mode="Opaque" x="0" y="0" width="30" height="18" backcolor="#E2E8F0" uuid="c1a1b2c3-0001-0001-0001-000000000001"/>
+                <box>
+                    <pen lineWidth="0.5" lineColor="#CBD5E1"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Nº]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="30" y="0" width="140" height="18" backcolor="#E2E8F0" uuid="c1a1b2c3-0001-0001-0001-000000000002"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#CBD5E1"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Atleta]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="170" y="0" width="95" height="18" backcolor="#E2E8F0" uuid="c1a1b2c3-0001-0001-0001-000000000003"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#CBD5E1"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Posição]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="16" splitType="Stretch">
+            <textField textAdjust="StretchHeight">
+                <reportElement x="0" y="0" width="30" height="16" uuid="d1a1b2c3-0001-0001-0001-000000000001"/>
+                <box>
+                    <pen lineWidth="0.25" lineColor="#E2E8F0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{numero_camisa} != null ? $F{numero_camisa} : "-"]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="30" y="0" width="140" height="16" uuid="d1a1b2c3-0001-0001-0001-000000000002"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.25" lineColor="#E2E8F0"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="170" y="0" width="95" height="16" uuid="d1a1b2c3-0001-0001-0001-000000000003"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.25" lineColor="#E2E8F0"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{posicao} != null ? $F{posicao} : "-"]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+</jasperReport>

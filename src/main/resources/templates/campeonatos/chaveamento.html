@@ -58,6 +58,15 @@
         </div>
 
         <div class="flex items-center gap-3">
+          <a th:href="@{/relatorios/campeonatos/{id}/pdf(id=${campeonato.id})}" target="_blank"
+             class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold shadow-lg shadow-orange-950/50 transition transform hover:-translate-y-0.5"
+             title="Emitir Súmula do Torneio em PDF">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+            </svg>
+            <span>Relatório PDF</span>
+          </a>
+
           <!-- Badge de Status -->
           <span th:if="${campeonato.status.name() == 'FINALIZADO'}"
             class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-amber-500/10 text-amber-300 border border-amber-500/40">
@@ -175,10 +184,10 @@
                 hx-push-url="true" method="post"
                 class="flex items-center justify-between gap-2 px-3 py-2 bg-gray-950/70 border-t border-gray-700">
                 <div class="flex items-center gap-1.5">
-                  <input type="number" name="placarMandante" min="0" required placeholder="0"
+                  <input type="number" name="placarMandante" min="0" step="1" inputmode="numeric" required placeholder="0"
                     class="w-12 py-1 px-1.5 rounded-lg bg-gray-900 border border-gray-700 text-center text-sm font-bold text-white outline-none focus:border-orange-500 transition" />
                   <span class="text-gray-500 text-xs font-bold">x</span>
-                  <input type="number" name="placarVisitante" min="0" required placeholder="0"
+                  <input type="number" name="placarVisitante" min="0" step="1" inputmode="numeric" required placeholder="0"
                     class="w-12 py-1 px-1.5 rounded-lg bg-gray-900 border border-gray-700 text-center text-sm font-bold text-white outline-none focus:border-orange-500 transition" />
                 </div>
                 <button type="submit"

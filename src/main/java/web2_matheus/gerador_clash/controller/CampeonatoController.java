@@ -86,12 +86,21 @@ public class CampeonatoController {
     @PostMapping("/{campeonatoId}/partidas/{partidaId}/placar")
     public String registrarPlacar(@PathVariable Long campeonatoId,
             @PathVariable Long partidaId,
-            @RequestParam Integer placarMandante,
-            @RequestParam Integer placarVisitante,
+            @RequestParam(required = false) String placarMandante,
+            @RequestParam(required = false) String placarVisitante,
             RedirectAttributes redirectAttributes) {
         try {
-            campeonatoService.registrarPlacar(campeonatoId, partidaId, placarMandante, placarVisitante);
+            if (placarMandante == null || placarMandante.isBlank()
+                    || placarVisitante == null || placarVisitante.isBlank()) {
+                throw new IllegalArgumentException("Informe um placar válido para ambas as equipes.");
+            }
+            int golsMandante = Integer.parseInt(placarMandante.trim());
+            int golsVisitante = Integer.parseInt(placarVisitante.trim());
+            campeonatoService.registrarPlacar(campeonatoId, partidaId, golsMandante, golsVisitante);
             redirectAttributes.addFlashAttribute("mensagemSucesso", "Placar registrado com sucesso!");
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro",
+                    "Informe apenas números inteiros válidos para o placar.");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("mensagemErro", e.getMessage());
         }
