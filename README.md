@@ -1,132 +1,80 @@
-# 🏆 Gerador Clash - Sistema Gerador de Campeonatos Amadores
+# Gerador Clash
 
-Projeto desenvolvido para a disciplina de **Programação Web 2** no **Instituto Federal do Triângulo Mineiro (IFTM)**, sob orientação do **Prof. Rafael Godoi Orbolato**.
+Sistema web para gerenciar campeonatos amadores em formato mata-mata. Permite cadastrar equipes, jogadores, alocar arenas e acompanhar o chaveamento.
 
-O **Gerador Clash** é uma aplicação web focada no gerenciamento de torneios esportivos amadores em formato eliminatório (**mata-mata**), permitindo cadastrar equipes e seus atletas, alocar arenas oficiais e acompanhar o chaveamento das partidas.
+Trabalho final da disciplina de Programação Web 2 — IFTM, orientado pelo Prof. Rafael Godoi Orbolato.
 
----
+## Tecnologias
 
-## 🚀 Tecnologias Utilizadas
+- Java 21, Spring Boot 4.1
+- Spring Data JPA + Hibernate + PostgreSQL
+- Flyway (migrações de banco)
+- Thymeleaf + Tailwind CSS + Alpine.js + HTMX
+- Spring Security
+- JasperReports (relatórios em PDF)
+- Lombok
 
-- **Linguagem:** Java 21
-- **Framework:** Spring Boot 4.1.x
-- **Persistência & Banco de Dados:**
-  - Spring Data JPA / Hibernate
-  - PostgreSQL 16+
-  - Flyway Migration (versionamento de banco de dados)
-- **Front-end:**
-  - Thymeleaf + Thymeleaf Layout Dialect
-  - Tailwind CSS
-  - Alpine.js (menus retráteis e modais)
-  - HTMX (interações dinâmicas)
-  - SweetAlert2
-- **Utilitários:** Lombok, Jakarta Bean Validation
+## Pré-requisitos
 
----
+- Java JDK 21+
+- PostgreSQL 16+
 
-## 📋 Pré-requisitos
+Não precisa instalar Maven — o projeto usa o Maven Wrapper (`./mvnw`).
 
-Para rodar este projeto em qualquer máquina, você precisará ter instalado:
+## Como rodar
 
-1. **Java JDK 21** ou superior:
-   - Verifique com o comando:
-     ```bash
-     java -version
-     ```
-2. **PostgreSQL 16** (ou versão compatível):
-   - Serviço rodando na porta padrão `5432`.
-3. **Git** (para clonar o repositório).
-
-> **Nota:** Não é necessário ter o Maven instalado globalmente na máquina; o projeto utiliza o **Maven Wrapper** (`mvnw` / `mvnw.cmd`) incluso no repositório.
-
----
-
-## 🛠️ Passo a Passo para Execução
-
-### 1. Clonar o Repositório
+1. Clone o repositório:
 ```bash
 git clone https://github.com/MatheusrgsS/gerador-clash-web2.git
 cd gerador-clash-web2
 ```
 
-### 2. Criar o Banco de Dados no PostgreSQL
-Acesse o seu PostgreSQL via terminal (`psql`) ou pelo **pgAdmin** e crie a base de dados do projeto:
-
+2. Crie o banco no PostgreSQL:
 ```sql
 CREATE DATABASE gerador_clash_db;
 ```
+As tabelas são criadas automaticamente pelo Flyway.
 
-*(Não é necessário criar tabelas manualmente! O **Flyway** executará as migrações automaticamente ao iniciar a aplicação, criando o esquema e semeando as 10 arenas oficiais).*
-
-### 3. Configurar as Credenciais do Banco
-Abra o arquivo `src/main/resources/application.properties` e verifique se as credenciais correspondem ao seu PostgreSQL local:
-
+3. Ajuste as credenciais em `src/main/resources/application.properties` se necessário:
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/gerador_clash_db
 spring.datasource.username=postgres
-spring.datasource.password=postgres
+spring.datasource.password=12345
 ```
-*Se a senha do seu usuário `postgres` for diferente de `postgres`, altere o campo `spring.datasource.password`.*
 
-### 4. Executar a Aplicação
+4. Execute:
+```bash
+# Linux/macOS
+chmod +x mvnw
+./mvnw spring-boot:run
 
-#### No Windows (PowerShell / CMD):
-```powershell
+# Windows
 .\mvnw.cmd spring-boot:run
 ```
 
-#### No Linux / macOS:
-```bash
-chmod +x mvnw
-./mvnw spring-boot:run
-```
+5. Acesse: https://localhost:8443
 
----
+O certificado SSL é autoassinado — o navegador vai mostrar um aviso, basta prosseguir.
 
-## 🌐 Acessando o Sistema (Seguro via HTTPS)
+## Usuários padrão
 
-Assim que a mensagem `Started GeradorClashApplication` aparecer no console, acesse no navegador via **HTTPS**:
+| Login | Senha | Papel |
+|---|---|---|
+| `admin` | `admin123` | Administrador — acesso completo |
+| `organizador` | `organizador123` | Organizador — cria torneios e equipes |
+| (sem login) | — | Visitante — somente leitura |
 
-- **Página Inicial (Lobby & Arenas):** [https://localhost:8443/](https://localhost:8443/)
-- **Tela de Login:** [https://localhost:8443/login](https://localhost:8443/login)
-- **Gerenciamento de Usuários (Exclusivo ADMIN):** [https://localhost:8443/usuarios](https://localhost:8443/usuarios)
-- **Listagem de Equipes:** [https://localhost:8443/equipes](https://localhost:8443/equipes)
-- **Meus Torneios:** [https://localhost:8443/campeonatos](https://localhost:8443/campeonatos)
+## Relatórios PDF
 
-> **Nota sobre o certificado HTTPS:** Como o certificado SSL local foi autoassinado para desenvolvimento, o navegador exibirá um alerta de segurança na primeira vez. Basta clicar em "Avançado" e prosseguir para `localhost`.
+Relatórios de campeonatos com JasperReports, incluindo sub-relatório de jogadores por equipe.
 
----
+Acesso: botão "PDF" na listagem de campeonatos ou na página de chaveamento.
 
-## 🔐 Credenciais Padrão para Avaliação (Etapa 6 - Spring Security)
+## Migrações do banco
 
-| Tipo de Usuário | Login | Senha | Nível de Acesso |
-|---|---|---|---|
-| **Administrador** | `admin` | `admin123` | Acesso completo. Gerencia e cadastra novos usuários (`/usuarios`), equipes e campeonatos. |
-| **Organizador** | `organizador` | `organizador123` | Cria novos torneios, cadastra equipes e insere placares. Sem acesso à gestão de usuários. |
-| **Visitante** (sem login) | - | - | Acesso público apenas para leitura (Home/Arenas, Chaveamento e Equipes). |
+- `V1__criar_tabelas.sql` — tabelas principais (arena, equipe, jogador, campeonato, partida)
+- `V2__popular_arenas.sql` — carga das 10 arenas
+- `V3__criar_tabelas_usuarios.sql` — tabelas de segurança (usuario, papel)
 
----
+## Autor
 
-## 📊 Relatório em PDF com Sub-relatórios 1:N (Etapa 7 - JasperReports)
-
-O sistema possui emissão de relatórios úteis via Web com o **JasperReports**, contendo relacionamento de um para muitos (sub-relatórios):
-- **Súmula do Torneio:** Exibe todas as partidas de um campeonato selecionado, arenas alocadas, placares e, para cada confronto, aciona os **sub-relatórios** para renderizar os elencos de atletas/jogadores de cada equipe (`Equipe` $\rightarrow$ `Jogadores`).
-- **Acesso direto via Web:**
-  - `GET /relatorios/campeonatos/{id}/pdf`
-  - Botão **📄 PDF** na tabela de campeonatos.
-  - Botão **📄 Relatório PDF** dentro da página de chaveamento do torneio.
-
----
-
-## 📂 Estrutura das Migrações de Banco (Flyway)
-
-- `V1__criar_tabelas.sql`: Criação das tabelas de `arena`, `equipe`, `jogador`, `campeonato`, `partida` e associações.
-- `V2__popular_arenas.sql`: Carga inicial das 10 arenas oficiais do torneio.
-- `V3__criar_tabelas_usuarios.sql`: Criação das tabelas de segurança (`usuario`, `papel`, `usuario_papel`) e inserção dos papéis `ROLE_ADMIN` e `ROLE_ORGANIZADOR`.
-
----
-
-## 👨‍💻 Autor
-
-- **Matheus** - Aluno de Sistemas para Internet / IFTM
-- **Professor Orientador:** Rafael Godoi Orbolato (`profgodoi`)
+Matheus — Sistemas para Internet, IFTM
