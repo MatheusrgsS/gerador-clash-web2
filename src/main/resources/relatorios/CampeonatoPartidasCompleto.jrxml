@@ -1,11 +1,20 @@
-<!-- Created with Jaspersoft Studio version 7.0.8.final using JasperReports Library version 7.0.8-6f896111  -->
-<jasperReport name="CampeonatoPartidasCompleto" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1c2d3e4-f5a6-7890-1234-56789abcdef0">
-	<parameter name="CAMPEONATO_ID" class="java.lang.Long"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["/relatorios/"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="SUBREPORT_JOGADORES" forPrompting="false" class="net.sf.jasperreports.engine.JasperReport"/>
-	<query language="sql"><![CDATA[SELECT
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="CampeonatoPartidasCompleto" language="java"
+              pageWidth="595" pageHeight="842"
+              columnWidth="555"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
+              uuid="b1c2d3e4-f5a6-7890-1234-56789abcdef0">
+
+    <parameter name="CAMPEONATO_ID" class="java.lang.Long"/>
+    <parameter name="SUBREPORT_DIR" class="java.lang.String">
+        <defaultValueExpression><![CDATA["/relatorios/"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="SUBREPORT_JOGADORES" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+
+    <queryString><![CDATA[SELECT
             c.id AS campeonato_id,
             c.nome AS campeonato_nome,
             c.data_inicio AS campeonato_data_inicio,
@@ -33,125 +42,230 @@
         INNER JOIN equipe v ON v.id = p.equipe_visitante_id
         LEFT JOIN equipe venc ON venc.id = p.vencedor_id
         WHERE c.id = $P{CAMPEONATO_ID}
-        ORDER BY p.rodada ASC, p.id ASC]]></query>
-	<field name="campeonato_id" class="java.lang.Long"/>
-	<field name="campeonato_nome" class="java.lang.String"/>
-	<field name="campeonato_data_inicio" class="java.sql.Date"/>
-	<field name="campeonato_status" class="java.lang.String"/>
-	<field name="campeao_nome" class="java.lang.String"/>
-	<field name="partida_id" class="java.lang.Long"/>
-	<field name="partida_rodada" class="java.lang.Integer"/>
-	<field name="partida_data_hora" class="java.sql.Timestamp"/>
-	<field name="placar_mandante" class="java.lang.Integer"/>
-	<field name="placar_visitante" class="java.lang.Integer"/>
-	<field name="partida_status" class="java.lang.String"/>
-	<field name="arena_nome" class="java.lang.String"/>
-	<field name="mandante_id" class="java.lang.Long"/>
-	<field name="mandante_nome" class="java.lang.String"/>
-	<field name="mandante_tecnico" class="java.lang.String"/>
-	<field name="visitante_id" class="java.lang.Long"/>
-	<field name="visitante_nome" class="java.lang.String"/>
-	<field name="visitante_tecnico" class="java.lang.String"/>
-	<field name="vencedor_nome" class="java.lang.String"/>
-	<title height="105" splitType="Stretch">
-		<element kind="rectangle" uuid="e1a2b3c4-0001-0001-0001-000000000001" x="0" y="0" width="555" height="52" backcolor="#C2410C">
-			<pen lineWidth="0.0"/>
-		</element>
-		<element kind="staticText" uuid="e1a2b3c4-0001-0001-0001-000000000002" x="15" y="6" width="380" height="22" forecolor="#FFFFFF" fontName="SansSerif" fontSize="16.0" bold="true" vTextAlign="Middle">
-			<text><![CDATA[GERADOR CLASH ]]></text>
-		</element>
-		<element kind="staticText" uuid="e1a2b3c4-0001-0001-0001-000000000003" x="15" y="28" width="380" height="16" forecolor="#FED7AA" fontName="SansSerif" fontSize="9.0" vTextAlign="Middle">
-			<text><![CDATA[Relatório de Partidas, Confrontos e Elencos]]></text>
-		</element>
-		<element kind="textField" uuid="e1a2b3c4-0001-0001-0001-000000000004" x="410" y="18" width="130" height="16" forecolor="#FFFFFF" fontName="SansSerif" fontSize="8.0" pattern="dd/MM/yyyy HH:mm" hTextAlign="Right" vTextAlign="Middle">
-			<expression><![CDATA[new java.util.Date()]]></expression>
-		</element>
-		<element kind="rectangle" uuid="e1a2b3c4-0001-0001-0001-000000000005" x="0" y="58" width="555" height="42" backcolor="#F8FAFC">
-			<pen lineWidth="1.0" lineColor="#CBD5E1"/>
-		</element>
-		<element kind="staticText" uuid="e1a2b3c4-0001-0001-0001-000000000006" x="12" y="62" width="70" height="14" forecolor="#64748B" fontName="SansSerif" fontSize="8.0" bold="true" vTextAlign="Middle">
-			<text><![CDATA[TORNEIO:]]></text>
-		</element>
-		<element kind="textField" uuid="e1a2b3c4-0001-0001-0001-000000000007" x="82" y="62" width="230" height="14" forecolor="#0F172A" fontName="SansSerif" fontSize="9.0" bold="true" vTextAlign="Middle">
-			<expression><![CDATA[$F{campeonato_nome}]]></expression>
-		</element>
-		<element kind="staticText" uuid="e1a2b3c4-0001-0001-0001-000000000008" x="12" y="80" width="70" height="14" forecolor="#64748B" fontName="SansSerif" fontSize="8.0" bold="true" vTextAlign="Middle">
-			<text><![CDATA[STATUS:]]></text>
-		</element>
-		<element kind="textField" uuid="e1a2b3c4-0001-0001-0001-000000000009" x="82" y="80" width="120" height="14" forecolor="#0F172A" fontName="SansSerif" fontSize="8.0" vTextAlign="Middle">
-			<expression><![CDATA[$F{campeonato_status}]]></expression>
-		</element>
-		<element kind="staticText" uuid="e1a2b3c4-0001-0001-0001-000000000010" x="320" y="62" width="75" height="14" forecolor="#64748B" fontName="SansSerif" fontSize="8.0" bold="true" vTextAlign="Middle">
-			<text><![CDATA[DATA INÍCIO:]]></text>
-		</element>
-		<element kind="textField" uuid="e1a2b3c4-0001-0001-0001-000000000011" x="395" y="62" width="145" height="14" forecolor="#0F172A" fontName="SansSerif" fontSize="8.0" pattern="dd/MM/yyyy" vTextAlign="Middle">
-			<expression><![CDATA[$F{campeonato_data_inicio}]]></expression>
-		</element>
-		<element kind="staticText" uuid="e1a2b3c4-0001-0001-0001-000000000012" x="320" y="80" width="75" height="14" forecolor="#64748B" fontName="SansSerif" fontSize="8.0" bold="true" vTextAlign="Middle">
-			<text><![CDATA[CAMPEÃO:]]></text>
-		</element>
-		<element kind="textField" uuid="e1a2b3c4-0001-0001-0001-000000000013" x="395" y="80" width="145" height="14" forecolor="#D97706" fontName="SansSerif" fontSize="8.0" bold="true" vTextAlign="Middle">
-			<expression><![CDATA[$F{campeao_nome} != null ? "🏆 " + $F{campeao_nome} : "A definir"]]></expression>
-		</element>
-	</title>
-	<detail>
-		<band height="155" splitType="Prevent">
-			<element kind="rectangle" uuid="f1a2b3c4-0001-0001-0001-000000000001" x="0" y="6" width="555" height="24" backcolor="#1E293B">
-				<pen lineWidth="0.0"/>
-			</element>
-			<element kind="textField" uuid="f1a2b3c4-0001-0001-0001-000000000002" x="10" y="8" width="170" height="20" forecolor="#F8FAFC" fontName="SansSerif" fontSize="9.0" bold="true" vTextAlign="Middle">
-				<expression><![CDATA["RODADA " + $F{partida_rodada} + " • CONFRONTO #" + $F{partida_id}]]></expression>
-			</element>
-			<element kind="textField" uuid="f1a2b3c4-0001-0001-0001-000000000003" x="185" y="8" width="220" height="20" forecolor="#CBD5E1" fontName="SansSerif" fontSize="8.0" vTextAlign="Middle">
-				<expression><![CDATA["🏟️ Arena: " + ($F{arena_nome} != null ? $F{arena_nome} : "A definir")]]></expression>
-			</element>
-			<element kind="textField" uuid="f1a2b3c4-0001-0001-0001-000000000004" x="410" y="8" width="135" height="20" forecolor="#FDBA74" fontName="SansSerif" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
-				<expression><![CDATA["Status: " + $F{partida_status}]]></expression>
-			</element>
-			<element kind="rectangle" uuid="f1a2b3c4-0001-0001-0001-000000000005" x="0" y="30" width="555" height="26" backcolor="#F1F5F9">
-				<pen lineWidth="0.5" lineColor="#CBD5E1"/>
-			</element>
-			<element kind="textField" uuid="f1a2b3c4-0001-0001-0001-000000000006" x="10" y="32" width="210" height="22" forecolor="#0F172A" fontName="SansSerif" fontSize="9.0" bold="true" vTextAlign="Middle">
-				<expression><![CDATA[$F{mandante_nome} + " (Mandante)"]]></expression>
-			</element>
-			<element kind="textField" uuid="f1a2b3c4-0001-0001-0001-000000000007" x="225" y="32" width="105" height="22" forecolor="#C2410C" fontName="SansSerif" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
-				<expression><![CDATA[($F{placar_mandante} != null ? $F{placar_mandante} : "-") + "  x  " + ($F{placar_visitante} != null ? $F{placar_visitante} : "-")]]></expression>
-			</element>
-			<element kind="textField" uuid="f1a2b3c4-0001-0001-0001-000000000008" x="335" y="32" width="210" height="22" forecolor="#0F172A" fontName="SansSerif" fontSize="9.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
-				<expression><![CDATA[$F{visitante_nome} + " (Visitante)"]]></expression>
-			</element>
-			<element kind="staticText" uuid="f1a2b3c4-0001-0001-0001-000000000009" x="0" y="60" width="265" height="15" forecolor="#475569" fontName="SansSerif" fontSize="8.0" bold="true" vTextAlign="Middle">
-				<text><![CDATA[⚽ ELENCO MANDANTE]]></text>
-			</element>
-			<element kind="staticText" uuid="f1a2b3c4-0001-0001-0001-000000000010" x="290" y="60" width="265" height="15" forecolor="#475569" fontName="SansSerif" fontSize="8.0" bold="true" vTextAlign="Middle">
-				<text><![CDATA[⚽ ELENCO VISITANTE]]></text>
-			</element>
-			<element kind="subreport" uuid="f1a2b3c4-0001-0001-0001-000000000011" x="0" y="78" width="265" height="65" removeLineWhenBlank="true">
-				<parameter name="EQUIPE_ID">
-					<expression><![CDATA[$F{mandante_id}]]></expression>
-				</parameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<expression><![CDATA[$P{SUBREPORT_JOGADORES} != null ? $P{SUBREPORT_JOGADORES} : $P{SUBREPORT_DIR} + "SubJogadores.jasper"]]></expression>
-			</element>
-			<element kind="subreport" uuid="f1a2b3c4-0001-0001-0001-000000000012" x="290" y="78" width="265" height="65" removeLineWhenBlank="true">
-				<parameter name="EQUIPE_ID">
-					<expression><![CDATA[$F{visitante_id}]]></expression>
-				</parameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<expression><![CDATA[$P{SUBREPORT_JOGADORES} != null ? $P{SUBREPORT_JOGADORES} : $P{SUBREPORT_DIR} + "SubJogadores.jasper"]]></expression>
-			</element>
-		</band>
-	</detail>
-	<pageFooter height="25" splitType="Stretch">
-		<element kind="line" uuid="a1a2b3c4-0001-0001-0001-000000000001" x="0" y="4" width="555" height="1" forecolor="#CBD5E1"/>
-		<element kind="staticText" uuid="a1a2b3c4-0001-0001-0001-000000000002" x="0" y="8" width="300" height="14" forecolor="#94A3B8" fontName="SansSerif" fontSize="7.0" vTextAlign="Middle">
-			<text><![CDATA[Gerador Clash • Sistema de Campeonatos]]></text>
-		</element>
-		<element kind="textField" uuid="a1a2b3c4-0001-0001-0001-000000000003" x="380" y="8" width="135" height="14" forecolor="#94A3B8" fontName="SansSerif" fontSize="7.0" hTextAlign="Right" vTextAlign="Middle">
-			<expression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></expression>
-		</element>
-		<element kind="textField" uuid="a1a2b3c4-0001-0001-0001-000000000004" x="515" y="8" width="40" height="14" forecolor="#94A3B8" fontName="SansSerif" fontSize="7.0" evaluationTime="Report" vTextAlign="Middle">
-			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
-		</element>
-	</pageFooter>
+        ORDER BY p.rodada ASC, p.id ASC]]></queryString>
+
+    <field name="campeonato_id" class="java.lang.Long"/>
+    <field name="campeonato_nome" class="java.lang.String"/>
+    <field name="campeonato_data_inicio" class="java.sql.Date"/>
+    <field name="campeonato_status" class="java.lang.String"/>
+    <field name="campeao_nome" class="java.lang.String"/>
+    <field name="partida_id" class="java.lang.Long"/>
+    <field name="partida_rodada" class="java.lang.Integer"/>
+    <field name="partida_data_hora" class="java.sql.Timestamp"/>
+    <field name="placar_mandante" class="java.lang.Integer"/>
+    <field name="placar_visitante" class="java.lang.Integer"/>
+    <field name="partida_status" class="java.lang.String"/>
+    <field name="arena_nome" class="java.lang.String"/>
+    <field name="mandante_id" class="java.lang.Long"/>
+    <field name="mandante_nome" class="java.lang.String"/>
+    <field name="mandante_tecnico" class="java.lang.String"/>
+    <field name="visitante_id" class="java.lang.Long"/>
+    <field name="visitante_nome" class="java.lang.String"/>
+    <field name="visitante_tecnico" class="java.lang.String"/>
+    <field name="vencedor_nome" class="java.lang.String"/>
+
+    <title>
+        <band height="105" splitType="Stretch">
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="52" backcolor="#C2410C" uuid="e1a2b3c4-0001-0001-0001-000000000001"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="15" y="6" width="380" height="22" forecolor="#FFFFFF" uuid="e1a2b3c4-0001-0001-0001-000000000002"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="16" isBold="true"/>
+                </textElement>
+                <text><![CDATA[GERADOR CLASH ]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="15" y="28" width="380" height="16" forecolor="#FED7AA" uuid="e1a2b3c4-0001-0001-0001-000000000003"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="9"/>
+                </textElement>
+                <text><![CDATA[Relatório de Partidas, Confrontos e Elencos]]></text>
+            </staticText>
+            <textField pattern="dd/MM/yyyy HH:mm">
+                <reportElement x="410" y="18" width="130" height="16" forecolor="#FFFFFF" uuid="e1a2b3c4-0001-0001-0001-000000000004"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <rectangle>
+                <reportElement x="0" y="58" width="555" height="42" backcolor="#F8FAFC" uuid="e1a2b3c4-0001-0001-0001-000000000005"/>
+                <graphicElement><pen lineWidth="1.0" lineColor="#CBD5E1"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="12" y="62" width="70" height="14" forecolor="#64748B" uuid="e1a2b3c4-0001-0001-0001-000000000006"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[TORNEIO:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="82" y="62" width="230" height="14" forecolor="#0F172A" uuid="e1a2b3c4-0001-0001-0001-000000000007"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{campeonato_nome}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="12" y="80" width="70" height="14" forecolor="#64748B" uuid="e1a2b3c4-0001-0001-0001-000000000008"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[STATUS:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="82" y="80" width="120" height="14" forecolor="#0F172A" uuid="e1a2b3c4-0001-0001-0001-000000000009"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{campeonato_status}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="320" y="62" width="75" height="14" forecolor="#64748B" uuid="e1a2b3c4-0001-0001-0001-000000000010"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[DATA INÍCIO:]]></text>
+            </staticText>
+            <textField pattern="dd/MM/yyyy">
+                <reportElement x="395" y="62" width="145" height="14" forecolor="#0F172A" uuid="e1a2b3c4-0001-0001-0001-000000000011"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{campeonato_data_inicio}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="320" y="80" width="75" height="14" forecolor="#64748B" uuid="e1a2b3c4-0001-0001-0001-000000000012"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[CAMPEÃO:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="395" y="80" width="145" height="14" forecolor="#D97706" uuid="e1a2b3c4-0001-0001-0001-000000000013"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{campeao_nome} != null ? $F{campeao_nome} : "A definir"]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <detail>
+        <band height="155" splitType="Prevent">
+            <rectangle>
+                <reportElement x="0" y="6" width="555" height="24" backcolor="#1E293B" uuid="f1a2b3c4-0001-0001-0001-000000000001"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <textField>
+                <reportElement x="10" y="8" width="170" height="20" forecolor="#F8FAFC" uuid="f1a2b3c4-0001-0001-0001-000000000002"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["RODADA " + $F{partida_rodada} + " - CONFRONTO #" + $F{partida_id}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="185" y="8" width="220" height="20" forecolor="#CBD5E1" uuid="f1a2b3c4-0001-0001-0001-000000000003"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Arena: " + ($F{arena_nome} != null ? $F{arena_nome} : "A definir")]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="410" y="8" width="135" height="20" forecolor="#FDBA74" uuid="f1a2b3c4-0001-0001-0001-000000000004"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Status: " + $F{partida_status}]]></textFieldExpression>
+            </textField>
+            <rectangle>
+                <reportElement x="0" y="30" width="555" height="26" backcolor="#F1F5F9" uuid="f1a2b3c4-0001-0001-0001-000000000005"/>
+                <graphicElement><pen lineWidth="0.5" lineColor="#CBD5E1"/></graphicElement>
+            </rectangle>
+            <textField>
+                <reportElement x="10" y="32" width="210" height="22" forecolor="#0F172A" uuid="f1a2b3c4-0001-0001-0001-000000000006"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{mandante_nome} + " (Mandante)"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="225" y="32" width="105" height="22" forecolor="#C2410C" uuid="f1a2b3c4-0001-0001-0001-000000000007"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="11" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[($F{placar_mandante} != null ? $F{placar_mandante} : "-") + "  x  " + ($F{placar_visitante} != null ? $F{placar_visitante} : "-")]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="335" y="32" width="210" height="22" forecolor="#0F172A" uuid="f1a2b3c4-0001-0001-0001-000000000008"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{visitante_nome} + " (Visitante)"]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="60" width="265" height="15" forecolor="#475569" uuid="f1a2b3c4-0001-0001-0001-000000000009"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[ELENCO MANDANTE]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="290" y="60" width="265" height="15" forecolor="#475569" uuid="f1a2b3c4-0001-0001-0001-000000000010"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" isBold="true"/>
+                </textElement>
+                <text><![CDATA[ELENCO VISITANTE]]></text>
+            </staticText>
+            <subreport>
+                <reportElement x="0" y="78" width="265" height="65" isRemoveLineWhenBlank="true" uuid="f1a2b3c4-0001-0001-0001-000000000011"/>
+                <subreportParameter name="EQUIPE_ID">
+                    <subreportParameterExpression><![CDATA[$F{mandante_id}]]></subreportParameterExpression>
+                </subreportParameter>
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+                <subreportExpression><![CDATA[$P{SUBREPORT_JOGADORES} != null ? $P{SUBREPORT_JOGADORES} : $P{SUBREPORT_DIR} + "SubJogadores.jasper"]]></subreportExpression>
+            </subreport>
+            <subreport>
+                <reportElement x="290" y="78" width="265" height="65" isRemoveLineWhenBlank="true" uuid="f1a2b3c4-0001-0001-0001-000000000012"/>
+                <subreportParameter name="EQUIPE_ID">
+                    <subreportParameterExpression><![CDATA[$F{visitante_id}]]></subreportParameterExpression>
+                </subreportParameter>
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+                <subreportExpression><![CDATA[$P{SUBREPORT_JOGADORES} != null ? $P{SUBREPORT_JOGADORES} : $P{SUBREPORT_DIR} + "SubJogadores.jasper"]]></subreportExpression>
+            </subreport>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="25" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="4" width="555" height="1" forecolor="#CBD5E1" uuid="a1a2b3c4-0001-0001-0001-000000000001"/>
+            </line>
+            <staticText>
+                <reportElement x="0" y="8" width="300" height="14" forecolor="#94A3B8" uuid="a1a2b3c4-0001-0001-0001-000000000002"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="7"/>
+                </textElement>
+                <text><![CDATA[Gerador Clash - Sistema de Campeonatos]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="380" y="8" width="135" height="14" forecolor="#94A3B8" uuid="a1a2b3c4-0001-0001-0001-000000000003"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="7"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="515" y="8" width="40" height="14" forecolor="#94A3B8" uuid="a1a2b3c4-0001-0001-0001-000000000004"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="7"/>
+                </textElement>
+                <textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
 </jasperReport>
