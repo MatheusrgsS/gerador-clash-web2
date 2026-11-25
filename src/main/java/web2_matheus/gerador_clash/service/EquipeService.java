@@ -18,9 +18,6 @@ public class EquipeService {
     private final EquipeRepository equipeRepository;
     private final JogadorRepository jogadorRepository;
 
-    // Construtor explícito: injeta as dependências e elimina 100% o bug do VS Code
-    // os construtures do loombok estavam dando erro no VS Code, então optei por
-    // fazer o construtor manualmente
     public EquipeService(EquipeRepository equipeRepository, JogadorRepository jogadorRepository) {
         this.equipeRepository = equipeRepository;
         this.jogadorRepository = jogadorRepository;
@@ -62,8 +59,11 @@ public class EquipeService {
     @Transactional
     public Jogador adicionarJogador(Long equipeId, Jogador jogador) {
         Equipe equipe = buscarPorId(equipeId);
-        equipe.adicionarJogador(jogador);
-        return jogadorRepository.save(jogador);
+        jogador.setId(null);
+        jogador.setEquipe(equipe);
+        Jogador salvo = jogadorRepository.save(jogador);
+        equipe.getJogadores().add(salvo);
+        return salvo;
     }
 
     @Transactional
